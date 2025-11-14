@@ -31,4 +31,5 @@ Locally you can run:
 trunk build --release
 ```
 
-For a real release we GitHub action which will be triggered by a release.
+For a release to the domain, we use GitHub action which will be triggered by a
+GitHub release.
