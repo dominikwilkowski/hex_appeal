@@ -1,0 +1,61 @@
+name: Publish new version
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  test:
+    uses: ./.github/workflows/testing.yml
+
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Update toolchain & add clippy
+        run: |
+          rustup update --no-self-update
+          rustup component add clippy
+          rustup toolchain install nightly --allow-downgrade
+          rustup target add wasm32-unknown-unknown --toolchain nightly
+          cargo install cargo-generate trunk --locked
+
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@23bce251a8cd2ffc3c1075eaa2367cf899916d84 # pin@v2
+        with:
+          prefix-key: clippy-v0
+          key: clippy-${{ runner.os }}
+
+      - name: Build
+        run: trunk build --release --public-url "${GITHUB_REPOSITORY#*/}"
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "dist/"
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

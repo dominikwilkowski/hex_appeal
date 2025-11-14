@@ -1,10 +1,11 @@
 [package]
 name = "hex_appeal"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2021"
-authors = ["Yuraima Estevez <yurm04@gmail.com>"]
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+authors = [
+	"Yuraima Estevez <yurm04@gmail.com>",
+	"Dominik Wilkowski <hi@dominik-wilkowski.com>",
+]
 
 [dependencies]
 leptos = { version = "0.8", features = ["csr", "nightly"] }

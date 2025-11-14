@@ -1,0 +1,130 @@
+name: Testing code
+
+on:
+  workflow_call:
+
+jobs:
+  debug:
+    name: Debugging action on ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+
+      - name: Installing tree
+        run: sudo apt-get -y install tree && which tree
+
+      - name: Listing all files
+        run: tree -I "target*|.git*"
+
+  fmt:
+    name: Running cargo fmt on ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    env:
+      CARGO_TERM_COLOR: always
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+
+      - name: Update toolchain & add rustfmt
+        run: |
+          rustup component add rustfmt
+          cargo install leptosfmt --locked
+
+      - name: Run rustfmt
+        run: cargo fmt --all --check
+
+      - name: Run cargofmt
+        run: leptosfmt "./**/*.rs" --check
+
+  check:
+    name: Running cargo check on ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    env:
+      CARGO_TERM_COLOR: always
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+
+      - name: Run check
+        run: cargo check
+
+  clippy:
+    name: Running cargo clippy on ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    runs-on: ${{ matrix.os }}
+    env:
+      CARGO_TERM_COLOR: always
+      RUSTFLAGS: "-Dwarnings"
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+
+      - name: Update toolchain & add clippy
+        run: |
+          rustup component add clippy
+
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@23bce251a8cd2ffc3c1075eaa2367cf899916d84 # pin@v2
+        with:
+          prefix-key: clippy-v0
+          key: clippy-${{ matrix.os }}
+
+      - name: Fetch dependencies
+        run: cargo fetch --locked
+
+      - name: Run clippy
+        run: cargo clippy -- --deny warnings
+
+  test:
+    name: Running cargo test on ${{ matrix.os }}
+    needs: [fmt, check, clippy]
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    runs-on: ${{ matrix.os }}
+    env:
+      CARGO_TERM_COLOR: always
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+
+      - name: Update toolchain
+        run: rustup update --no-self-update
+
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@23bce251a8cd2ffc3c1075eaa2367cf899916d84 # pin@v2
+        with:
+          prefix-key: test-v0
+          key: test-${{ matrix.os }}
+
+      - name: Build
+        run: cargo build
+
+      - name: Run tests
+        run: cargo test
