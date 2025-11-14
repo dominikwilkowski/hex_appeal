@@ -47,7 +47,7 @@ jobs:
           key: clippy-${{ runner.os }}
 
       - name: Build
-        run: trunk build --release --public-url "${GITHUB_REPOSITORY#*/}"
+        run: trunk build --release --public-url "/${GITHUB_REPOSITORY#*/}"
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
