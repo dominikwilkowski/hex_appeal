@@ -8,7 +8,7 @@ release = false
 # The output dir for all final assets.
 dist = "dist"
 # The public URL from which assets are to be served.
-public_url = "/"
+public_url = "/hex_appeal"
 # Whether to include hash values in the output file names.
 filehash = true
 # Whether to inject scripts (and module preloads) into the finalized output.
@@ -42,7 +42,7 @@ port = 3000
 # Disable the reverse DNS lookup during startup
 # disable_address_lookup = false
 # Open a browser tab once the initial build is complete.
-open = false
+open = true
 # Whether to disable fallback to index.html for missing files.
 # no_spa = false
 # Disable auto-reload of the web app.

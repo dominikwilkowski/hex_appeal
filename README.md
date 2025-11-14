@@ -15,7 +15,7 @@ For Raquel
 Dev locally:
 
 ```sh
-trunk serve --port 3000 --open
+trunk serve
 ```
 
 Before committing make sure you run:
