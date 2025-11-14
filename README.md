@@ -20,7 +20,7 @@ trunk serve
 
 Before committing make sure you run:
 ```sh
-leptosfmt ./**/*.rs
+leptosfmt ./**/*.rs && cargo fmt -- -l
 ```
 
 ## Release
