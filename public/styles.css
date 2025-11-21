@@ -10,9 +10,15 @@ body {
 	align-items: center;
 }
 
-.buttons {
-	display: flex;
-	justify-content: space-evenly;
+.group {
+	list-style: none;
+	border: 1px dashed #000;
+	padding: 1rem;
+}
+
+.group:empty {
+	border: none;
+	padding: 0;
 }
 
 h1,
@@ -26,16 +32,6 @@ h6 {
 	padding: 2rem;
 }
 
-p,
-button {
+p {
 	margin: var(--size-6);
-}
-
-body > picture,
-button {
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-	text-align: center;
-	margin: 2rem;
 }
