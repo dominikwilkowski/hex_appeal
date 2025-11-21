@@ -18,6 +18,7 @@ pub fn Group(
 
 	let colors = move || groups.with(|all| all.get(idx.get()).map(|g| g.colors.clone()).unwrap_or_default());
 	let group_name = move || groups.with(|all| all.get(idx.get()).map(|g| g.name.clone()).unwrap_or_default());
+	let group_included = move || groups.with(|all| all.get(idx.get()).map(|g| g.include_default).unwrap_or_default());
 
 	let on_submit = move |ev: SubmitEvent| {
 		ev.prevent_default();
@@ -44,6 +45,13 @@ pub fn Group(
 
 	view! {
 		<h2>{group_name}</h2>
+		<i>{
+			if group_included() {
+				"Included by default"
+			} else {
+				"Not included by default"
+			}
+		}</i>
 		<ul class="group">
 			<For
 				each=move || colors()

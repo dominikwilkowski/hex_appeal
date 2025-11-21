@@ -18,14 +18,17 @@ pub struct Color {
 #[derive(Clone)]
 pub struct Group {
 	pub name: String,
+	pub include_default: bool,
 	pub colors: Vec<Color>,
 }
 
 #[component]
 pub fn Home() -> impl IntoView {
 	let (name, set_name) = signal(String::new());
+	let include_default = RwSignal::new(false);
 	let (groups, set_groups) = signal(vec![Group {
 		name: String::from("Default"),
+		include_default: false,
 		colors: Vec::new(),
 	}]);
 
@@ -35,6 +38,7 @@ pub fn Home() -> impl IntoView {
 		let name = name();
 		set_groups.write().push(Group {
 			name: name.clone(),
+			include_default: include_default(),
 			colors: Vec::new(),
 		});
 
@@ -86,6 +90,11 @@ pub fn Home() -> impl IntoView {
 								set_name.set(event_target_value(&ev));
 							}
 						/>
+					</label>
+
+					<label>
+						"Always include this group"
+						<input type="checkbox" bind:checked=include_default />
 					</label>
 					<button type="submit">Add Group</button>
 				</form>
