@@ -45,13 +45,7 @@ pub fn Group(
 
 	view! {
 		<h2>{group_name}</h2>
-		<i>{
-			if group_included() {
-				"Included by default"
-			} else {
-				"Not included by default"
-			}
-		}</i>
+		<i>{if group_included() { "Included by default" } else { "Not included by default" }}</i>
 		<ul class="group">
 			<For
 				each=move || colors()
