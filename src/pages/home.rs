@@ -35,10 +35,10 @@ pub fn Home() -> impl IntoView {
 	let on_submit = move |ev: SubmitEvent| {
 		ev.prevent_default();
 
-		let name = name();
+		let name = name.get();
 		set_groups.write().push(Group {
 			name: name.clone(),
-			include_default: include_default(),
+			include_default: include_default.get(),
 			colors: Vec::new(),
 		});
 
@@ -72,7 +72,7 @@ pub fn Home() -> impl IntoView {
 			<main class="container">
 				<h1>"Hex Appeal"</h1>
 				<ForEnumerate
-					each=move || groups()
+					each=move || groups.get()
 					// TODO: name is not guaranteed to be unique
 					key=|group| group.name.clone()
 					children=move |idx, _| {

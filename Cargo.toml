@@ -8,9 +8,9 @@ authors = [
 ]
 
 [dependencies]
-leptos = { version = "0.8", features = ["csr", "nightly"] }
+leptos = { version = "0.8", features = ["csr"] }
 leptos_meta = { version = "0.8" }
-leptos_router = { version = "0.8", features = ["nightly"] }
+leptos_router = { version = "0.8" }
 console_log = "1"
 log = "0.4"
 console_error_panic_hook = "0.1"
