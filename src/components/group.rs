@@ -46,13 +46,18 @@ pub fn Group(
 	view! {
 		<h2>{group_name}</h2>
 		<i>{if group_included() { "Included by default" } else { "Not included by default" }}</i>
+		{if groups.get().len() > 1 {
+			Some(view! { <button>"Delete: "{idx.get()}</button> })
+		} else {
+			None
+		}}
 		<ul class="group">
-			<For
+			<ForEnumerate
 				each=move || colors()
 				// TODO: name is not guaranteed to be unique
 				key=|color| color.name.clone()
-				children=move |color| {
-					view! { <Swatch color=color /> }
+				children=move |idx, color| {
+					view! { <Swatch color=color idx=idx /> }
 				}
 			/>
 		</ul>
