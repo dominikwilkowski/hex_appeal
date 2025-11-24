@@ -1,7 +1,7 @@
 use leptos::{ev::SubmitEvent, prelude::*};
 
 use crate::{
-	components::swatch::Swatch,
+	components::{del_button::DelButton, swatch::Swatch},
 	pages::home::{Color, Group, Rgb},
 };
 
@@ -46,11 +46,9 @@ pub fn Group(
 	view! {
 		<h2>{group_name}</h2>
 		<i>{if group_included() { "Included by default" } else { "Not included by default" }}</i>
-		{if groups.get().len() > 1 {
-			Some(view! { <button>"Delete: "{idx.get()}</button> })
-		} else {
-			None
-		}}
+		<Show when=move || { idx.get() > 0 }>
+			<DelButton on_click=move |_| {}>"Delete"</DelButton>
+		</Show>
 		<ul class="group">
 			<ForEnumerate
 				each=move || colors()
