@@ -15,6 +15,7 @@ pub fn Group(
 	let (r, set_r) = signal(String::new());
 	let (g, set_g) = signal(String::new());
 	let (b, set_b) = signal(String::new());
+	let (color, set_color) = signal(String::new());
 
 	let colors = move || groups.with(|all| all.get(group_idx.get()).map(|g| g.colors.clone()).unwrap_or_default());
 	let group_name = move || groups.with(|all| all.get(group_idx.get()).map(|g| g.name.clone()).unwrap_or_default());
@@ -25,15 +26,15 @@ pub fn Group(
 		ev.prevent_default();
 
 		let name = name.get();
-		let r = r.get().parse::<u8>().unwrap_or(0);
-		let g = g.get().parse::<u8>().unwrap_or(0);
-		let b = b.get().parse::<u8>().unwrap_or(0);
+		let red = r.get().parse::<u8>().unwrap_or(0);
+		let green = g.get().parse::<u8>().unwrap_or(0);
+		let blue = b.get().parse::<u8>().unwrap_or(0);
 
 		set_groups.update(|all| {
 			if let Some(group) = all.get_mut(group_idx.get()) {
 				group.colors.push(Color {
 					name: name.clone(),
-					value: Rgb { r, g, b },
+					value: Rgb { red, green, blue },
 				});
 			}
 		});
@@ -121,6 +122,24 @@ pub fn Group(
 							prop:value=b
 							on:input=move |ev| {
 								set_b.set(event_target_value(&ev));
+							}
+						/>
+					</label>
+				</li>
+				<li>
+					<label>
+						"Color: "
+						<input
+							type="color"
+							prop:value=color
+							on:input=move |ev| {
+								let value = event_target_value(&ev);
+								if let Some(rgb) = Rgb::from_hex(&value) {
+									set_r.set(rgb.red.to_string());
+									set_g.set(rgb.green.to_string());
+									set_b.set(rgb.blue.to_string());
+								}
+								set_color.set(value);
 							}
 						/>
 					</label>

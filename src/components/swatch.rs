@@ -12,7 +12,7 @@ pub fn Swatch(
 	group_idx: ReadSignal<usize>,
 	set_groups: WriteSignal<Vec<Group>>,
 ) -> impl IntoView {
-	let style = format!("background:rgb({}, {}, {})", color.value.r, color.value.g, color.value.b,);
+	let style = format!("background:rgb({}, {}, {})", color.value.red, color.value.green, color.value.blue,);
 	view! {
 		<li style=style>
 			{color.name.clone()}
