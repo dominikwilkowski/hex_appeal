@@ -8,7 +8,7 @@ use crate::{
 #[component]
 pub fn Group(
 	groups: ReadSignal<Vec<Group>>,
-	idx: ReadSignal<usize>,
+	group_idx: ReadSignal<usize>,
 	set_groups: WriteSignal<Vec<Group>>,
 ) -> impl IntoView {
 	let (name, set_name) = signal(String::new());
@@ -16,9 +16,10 @@ pub fn Group(
 	let (g, set_g) = signal(String::new());
 	let (b, set_b) = signal(String::new());
 
-	let colors = move || groups.with(|all| all.get(idx.get()).map(|g| g.colors.clone()).unwrap_or_default());
-	let group_name = move || groups.with(|all| all.get(idx.get()).map(|g| g.name.clone()).unwrap_or_default());
-	let group_included = move || groups.with(|all| all.get(idx.get()).map(|g| g.include_default).unwrap_or_default());
+	let colors = move || groups.with(|all| all.get(group_idx.get()).map(|g| g.colors.clone()).unwrap_or_default());
+	let group_name = move || groups.with(|all| all.get(group_idx.get()).map(|g| g.name.clone()).unwrap_or_default());
+	let group_included =
+		move || groups.with(|all| all.get(group_idx.get()).map(|g| g.include_default).unwrap_or_default());
 
 	let on_submit = move |ev: SubmitEvent| {
 		ev.prevent_default();
@@ -29,7 +30,7 @@ pub fn Group(
 		let b = b.get().parse::<u8>().unwrap_or(0);
 
 		set_groups.update(|all| {
-			if let Some(group) = all.get_mut(idx.get()) {
+			if let Some(group) = all.get_mut(group_idx.get()) {
 				group.colors.push(Color {
 					name: name.clone(),
 					value: Rgb { r, g, b },
@@ -46,8 +47,14 @@ pub fn Group(
 	view! {
 		<h2>{group_name}</h2>
 		<i>{if group_included() { "Included by default" } else { "Not included by default" }}</i>
-		<Show when=move || { idx.get() > 0 }>
-			<DelButton on_click=move |_| {}>"Delete"</DelButton>
+		<Show when=move || { group_idx.get() > 0 }>
+			<DelButton on_click=move |_| {
+				let index = group_idx.get_untracked();
+				set_groups
+					.update(move |groups| {
+						groups.remove(index);
+					});
+			}>"Delete"</DelButton>
 		</Show>
 		<ul class="group">
 			<ForEnumerate
@@ -55,7 +62,9 @@ pub fn Group(
 				// TODO: name is not guaranteed to be unique
 				key=|color| color.name.clone()
 				children=move |idx, color| {
-					view! { <Swatch color=color idx=idx /> }
+					view! {
+						<Swatch color=color idx=idx group_idx=group_idx set_groups=set_groups />
+					}
 				}
 			/>
 		</ul>

@@ -76,7 +76,7 @@ pub fn Home() -> impl IntoView {
 					// TODO: name is not guaranteed to be unique
 					key=|group| group.name.clone()
 					children=move |idx, _| {
-						view! { <Group groups=groups idx=idx set_groups=set_groups /> }
+						view! { <Group groups=groups group_idx=idx set_groups=set_groups /> }
 					}
 				/>
 
