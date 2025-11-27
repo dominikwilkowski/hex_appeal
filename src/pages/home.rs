@@ -54,7 +54,32 @@ pub fn Home() -> impl IntoView {
 	let (groups, set_groups) = signal(vec![Group {
 		name: String::from("Default"),
 		include_default: false,
-		colors: Vec::new(),
+		colors: vec![
+			Color {
+				name: String::from("Red"),
+				value: Rgb {
+					red: 255,
+					green: 0,
+					blue: 0,
+				},
+			},
+			Color {
+				name: String::from("Green"),
+				value: Rgb {
+					red: 0,
+					green: 255,
+					blue: 0,
+				},
+			},
+			Color {
+				name: String::from("Blue"),
+				value: Rgb {
+					red: 0,
+					green: 0,
+					blue: 255,
+				},
+			},
+		],
 	}]);
 
 	let on_submit = move |ev: SubmitEvent| {
