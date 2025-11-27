@@ -68,86 +68,87 @@ pub fn Group(
 					}
 				}
 			/>
+			<li class="new_swatch">
+				<form on:submit=on_submit>
+					<ul>
+						<li>
+							<label>
+								"Name: "
+								<input
+									type="text"
+									prop:value=name
+									on:input=move |ev| {
+										set_name.set(event_target_value(&ev));
+									}
+								/>
+							</label>
+						</li>
+						<li>
+							<label>
+								"R: "
+								<input
+									type="number"
+									min="0"
+									max="255"
+									prop:value=r
+									on:input=move |ev| {
+										set_r.set(event_target_value(&ev));
+									}
+								/>
+							</label>
+						</li>
+						<li>
+							<label>
+								"G: "
+								<input
+									type="number"
+									min="0"
+									max="255"
+									prop:value=g
+									on:input=move |ev| {
+										set_g.set(event_target_value(&ev));
+									}
+								/>
+							</label>
+						</li>
+						<li>
+							<label>
+								"B: "
+								<input
+									type="number"
+									min="0"
+									max="255"
+									prop:value=b
+									on:input=move |ev| {
+										set_b.set(event_target_value(&ev));
+									}
+								/>
+							</label>
+						</li>
+						<li>
+							<label>
+								"Color: "
+								<input
+									type="color"
+									prop:value=color
+									on:input=move |ev| {
+										let value = event_target_value(&ev);
+										if let Some(rgb) = Rgb::from_hex(&value) {
+											set_r.set(rgb.red.to_string());
+											set_g.set(rgb.green.to_string());
+											set_b.set(rgb.blue.to_string());
+										}
+										set_color.set(value);
+									}
+								/>
+							</label>
+						</li>
+						<li>
+							<button type="submit">Add Color</button>
+						</li>
+					</ul>
+				</form>
+			</li>
 		</ul>
-
-		<form class="buttons" on:submit=on_submit>
-			<ul>
-				<li>
-					<label>
-						"Name: "
-						<input
-							type="text"
-							prop:value=name
-							on:input=move |ev| {
-								set_name.set(event_target_value(&ev));
-							}
-						/>
-					</label>
-				</li>
-				<li>
-					<label>
-						"R: "
-						<input
-							type="number"
-							min="0"
-							max="255"
-							prop:value=r
-							on:input=move |ev| {
-								set_r.set(event_target_value(&ev));
-							}
-						/>
-					</label>
-				</li>
-				<li>
-					<label>
-						"G: "
-						<input
-							type="number"
-							min="0"
-							max="255"
-							prop:value=g
-							on:input=move |ev| {
-								set_g.set(event_target_value(&ev));
-							}
-						/>
-					</label>
-				</li>
-				<li>
-					<label>
-						"B: "
-						<input
-							type="number"
-							min="0"
-							max="255"
-							prop:value=b
-							on:input=move |ev| {
-								set_b.set(event_target_value(&ev));
-							}
-						/>
-					</label>
-				</li>
-				<li>
-					<label>
-						"Color: "
-						<input
-							type="color"
-							prop:value=color
-							on:input=move |ev| {
-								let value = event_target_value(&ev);
-								if let Some(rgb) = Rgb::from_hex(&value) {
-									set_r.set(rgb.red.to_string());
-									set_g.set(rgb.green.to_string());
-									set_b.set(rgb.blue.to_string());
-								}
-								set_color.set(value);
-							}
-						/>
-					</label>
-				</li>
-				<li>
-					<button type="submit">Add Color</button>
-				</li>
-			</ul>
-		</form>
 	}
 }
