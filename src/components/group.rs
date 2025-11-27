@@ -43,6 +43,7 @@ pub fn Group(
 		set_r.set(String::new());
 		set_g.set(String::new());
 		set_b.set(String::new());
+		set_color.set(String::new());
 	};
 
 	view! {
@@ -71,7 +72,7 @@ pub fn Group(
 			<li class="new_swatch">
 				<form on:submit=on_submit>
 					<ul>
-						<li>
+						<li class="new_swatch_name">
 							<label>
 								"Name: "
 								<input
@@ -83,7 +84,7 @@ pub fn Group(
 								/>
 							</label>
 						</li>
-						<li>
+						<li class="new_swatch_rgb">
 							<label>
 								"R: "
 								<input
@@ -97,7 +98,7 @@ pub fn Group(
 								/>
 							</label>
 						</li>
-						<li>
+						<li class="new_swatch_rgb">
 							<label>
 								"G: "
 								<input
@@ -111,7 +112,7 @@ pub fn Group(
 								/>
 							</label>
 						</li>
-						<li>
+						<li class="new_swatch_rgb">
 							<label>
 								"B: "
 								<input

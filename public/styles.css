@@ -63,5 +63,22 @@ p {
 		list-style: none;
 		padding: 0;
 		margin: 0;
+
+		li {
+			padding: 0.5rem;
+		}
+
+		.new_swatch_name {
+			display: flex;
+			max-width: 250px;
+		}
+
+		.new_swatch_rgb {
+			display: inline-block;
+
+			input {
+				width: 5ch;
+			}
+		}
 	}
 }

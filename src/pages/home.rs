@@ -131,24 +131,30 @@ pub fn Home() -> impl IntoView {
 				/>
 
 				<form class="buttons" on:submit=on_submit>
-					<label>
-						"Name: "
-						<input
-							type="text"
-							prop:value=name
-							on:input=move |ev| {
-								set_name.set(event_target_value(&ev));
-							}
-						/>
-					</label>
-
-					<label>
-						"Always include this group"
-						<input type="checkbox" bind:checked=include_default />
-					</label>
-					<button type="submit">Add Group</button>
+					<ul>
+						<li>
+							<label>
+								"Name: "
+								<input
+									type="text"
+									prop:value=name
+									on:input=move |ev| {
+										set_name.set(event_target_value(&ev));
+									}
+								/>
+							</label>
+						</li>
+						<li>
+							<label>
+								"Always include this group"
+								<input type="checkbox" bind:checked=include_default />
+							</label>
+						</li>
+						<li>
+							<button type="submit">Add Group</button>
+						</li>
+					</ul>
 				</form>
-
 			</main>
 		</ErrorBoundary>
 	}
