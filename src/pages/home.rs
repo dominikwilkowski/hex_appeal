@@ -130,7 +130,7 @@ pub fn Home() -> impl IntoView {
 					}
 				/>
 
-				<form class="buttons" on:submit=on_submit>
+				<form class="new_group" on:submit=on_submit>
 					<ul>
 						<li>
 							<label>
