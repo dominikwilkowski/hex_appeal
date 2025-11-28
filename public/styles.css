@@ -24,6 +24,18 @@ p {
 	margin: var(--size-6);
 }
 
+button {
+	appearance: none;
+	background: #fff;
+	box-shadow: none;
+	border: 1px solid #b1b6b7;
+	border-radius: 3px;
+	padding: 0 0.25rem;
+	margin: 0;
+	display: inline;
+	cursor: pointer;
+}
+
 .group {
 	list-style: none;
 	padding: 1rem;
@@ -39,17 +51,42 @@ p {
 
 .swatch,
 .new_swatch {
-	min-height: 100px;
-	border: 1px solid #000;
+	border: 1px solid #b1b6b7;
+	background: #f9fafc;
 	min-width: 9rem;
+	border-radius: 12px;
+	overflow: hidden;
 
 	.swatch_label {
-		display: grid;
-		grid-template-columns: 1fr auto;
-		align-items: center;
-		text-align: center;
+		list-style: none;
+		margin: 0.5rem 0 0 0;
 		padding: 0.25rem 0.5rem;
-		background: #fff;
+		font-size: 0.85rem;
+
+		li {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+		}
+
+		li + li {
+			margin-top: 0.5rem;
+		}
+
+		.swatch_label_name {
+			display: grid;
+			grid-template-columns: 1fr auto;
+		}
+
+		.swatch_label_value {
+			color: #777;
+		}
+	}
+
+	.swatch_color {
+		height: 90px;
+		margin: 0.25rem 0.25rem 0 0.25rem;
+		border-radius: 10px;
 	}
 }
 
