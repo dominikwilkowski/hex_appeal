@@ -32,7 +32,9 @@ pub fn Swatch(
 							});
 					}>"Delete"</DelButton>
 				</li>
-				<li class="swatch_label_value">"RGB("{color.value.red}", "{color.value.green}", "{color.value.blue}")"</li>
+				<li class="swatch_label_value">
+					"RGB("{color.value.red}", "{color.value.green}", "{color.value.blue}")"
+				</li>
 			</ul>
 		</li>
 	}
