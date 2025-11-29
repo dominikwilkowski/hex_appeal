@@ -1,21 +1,20 @@
 use leptos::{ev::SubmitEvent, prelude::*};
 
 use crate::{
+	color::{Color, Group, Rgb},
 	components::{del_button::DelButton, swatch::Swatch},
-	Color, Group, Rgb,
 };
 
 #[component]
-pub fn Group(
-	groups: ReadSignal<Vec<Group>>,
-	group_idx: ReadSignal<usize>,
-	set_groups: WriteSignal<Vec<Group>>,
-) -> impl IntoView {
+pub fn Group(group_idx: ReadSignal<usize>) -> impl IntoView {
 	let (name, set_name) = signal(String::new());
 	let (r, set_r) = signal(String::new());
 	let (g, set_g) = signal(String::new());
 	let (b, set_b) = signal(String::new());
 	let (color, set_color) = signal(String::new());
+
+	let groups = use_context::<ReadSignal<Vec<Group>>>().expect("Unable to find groups context");
+	let set_groups = use_context::<WriteSignal<Vec<Group>>>().expect("Unable to find set_groups context");
 
 	let colors = move || groups.with(|all| all.get(group_idx.get()).map(|g| g.colors.clone()).unwrap_or_default());
 	let group_name = move || groups.with(|all| all.get(group_idx.get()).map(|g| g.name.clone()).unwrap_or_default());
@@ -64,9 +63,7 @@ pub fn Group(
 				// TODO: name is not guaranteed to be unique
 				key=|color| color.name.clone()
 				children=move |idx, color| {
-					view! {
-						<Swatch color=color idx=idx group_idx=group_idx set_groups=set_groups />
-					}
+					view! { <Swatch color=color idx=idx group_idx=group_idx /> }
 				}
 			/>
 			<li class="new_swatch">

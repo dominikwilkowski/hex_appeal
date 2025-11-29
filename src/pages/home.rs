@@ -1,41 +1,13 @@
 use leptos::{ev::SubmitEvent, prelude::*};
 
-use crate::{components::group::Group, Color, Group, Rgb};
+use crate::{color::Group, components::group::Group};
 
 #[component]
 pub fn Home() -> impl IntoView {
 	let (name, set_name) = signal(String::new());
 	let include_default = RwSignal::new(false);
-	let (groups, set_groups) = signal(vec![Group {
-		name: String::from("Default"),
-		include_default: false,
-		colors: vec![
-			Color {
-				name: String::from("Red"),
-				value: Rgb {
-					red: 255,
-					green: 0,
-					blue: 0,
-				},
-			},
-			Color {
-				name: String::from("Green"),
-				value: Rgb {
-					red: 0,
-					green: 255,
-					blue: 0,
-				},
-			},
-			Color {
-				name: String::from("Blue"),
-				value: Rgb {
-					red: 0,
-					green: 0,
-					blue: 255,
-				},
-			},
-		],
-	}]);
+	let groups = use_context::<ReadSignal<Vec<Group>>>().expect("Unable to find groups context");
+	let set_groups = use_context::<WriteSignal<Vec<Group>>>().expect("Unable to find set_groups context");
 
 	let on_submit = move |ev: SubmitEvent| {
 		ev.prevent_default();
@@ -79,7 +51,7 @@ pub fn Home() -> impl IntoView {
 				// TODO: name is not guaranteed to be unique
 				key=|group| group.name.clone()
 				children=move |idx, _| {
-					view! { <Group groups=groups group_idx=idx set_groups=set_groups /> }
+					view! { <Group group_idx=idx /> }
 				}
 			/>
 

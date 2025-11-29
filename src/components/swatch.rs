@@ -1,15 +1,15 @@
 use leptos::prelude::*;
 
-use crate::{components::del_button::DelButton, Color, Group};
+use crate::{
+	color::{Color, Group},
+	components::del_button::DelButton,
+};
 
 #[component]
-pub fn Swatch(
-	color: Color,
-	idx: ReadSignal<usize>,
-	group_idx: ReadSignal<usize>,
-	set_groups: WriteSignal<Vec<Group>>,
-) -> impl IntoView {
+pub fn Swatch(color: Color, idx: ReadSignal<usize>, group_idx: ReadSignal<usize>) -> impl IntoView {
+	let set_groups = use_context::<WriteSignal<Vec<Group>>>().expect("Unable to find set_groups context");
 	let style = format!("background:rgb({}, {}, {})", color.value.red, color.value.green, color.value.blue,);
+
 	view! {
 		<li class="swatch">
 			<div class="swatch_color" style=style />

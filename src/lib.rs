@@ -1,61 +1,36 @@
+use gloo_storage::Storage;
 use leptos::prelude::*;
 use leptos_meta::*;
 use leptos_router::{components::*, path};
 
+use crate::{
+	color::Group,
+	pages::{home::Home, matrix::Matrix, not_found::NotFound},
+};
+
+mod color;
 mod components;
 mod pages;
 
-use crate::pages::{home::Home, matrix::Matrix, not_found::NotFound};
-
-#[derive(Clone)]
-pub struct Rgb {
-	pub red: u8,
-	pub green: u8,
-	pub blue: u8,
-}
-
-impl Rgb {
-	pub fn from_hex(hex: &str) -> Option<Rgb> {
-		let hex = hex.strip_prefix('#')?;
-		if hex.len() == 3 {
-			let red = u8::from_str_radix(&hex[0..1], 16).ok()?;
-			let green = u8::from_str_radix(&hex[1..2], 16).ok()?;
-			let blue = u8::from_str_radix(&hex[2..3], 16).ok()?;
-
-			Some(Rgb {
-				red: red * 17,
-				green: green * 17,
-				blue: blue * 17,
-			})
-		} else if hex.len() == 6 {
-			let red = u8::from_str_radix(&hex[0..2], 16).ok()?;
-			let green = u8::from_str_radix(&hex[2..4], 16).ok()?;
-			let blue = u8::from_str_radix(&hex[4..6], 16).ok()?;
-
-			Some(Rgb { red, green, blue })
-		} else {
-			None
-		}
-	}
-}
-
-#[derive(Clone)]
-pub struct Color {
-	pub name: String,
-	pub value: Rgb,
-}
-
-#[derive(Clone)]
-pub struct Group {
-	pub name: String,
-	pub include_default: bool,
-	pub colors: Vec<Color>,
-}
+const STORAGE_KEY: &str = "hex_appeal_v1";
 
 #[component]
 pub fn App() -> impl IntoView {
-	// Provides context that manages stylesheets, titles, meta tags, etc.
 	provide_meta_context();
+
+	let stored_groups: Vec<Group> =
+		gloo_storage::LocalStorage::get(STORAGE_KEY).unwrap_or_else(|_| vec![Group::default()]);
+	let (groups, set_groups) = signal(stored_groups);
+
+	Effect::new({
+		move |_| {
+			let current = groups.get();
+			let _ = gloo_storage::LocalStorage::set(STORAGE_KEY, &current);
+		}
+	});
+
+	provide_context(groups);
+	provide_context(set_groups);
 
 	view! {
 		<Html attr:lang="en" attr:dir="ltr" attr:data-theme="light" />
