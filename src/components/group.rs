@@ -2,7 +2,7 @@ use leptos::{ev::SubmitEvent, prelude::*};
 
 use crate::{
 	components::{del_button::DelButton, swatch::Swatch},
-	pages::home::{Color, Group, Rgb},
+	Color, Group, Rgb,
 };
 
 #[component]

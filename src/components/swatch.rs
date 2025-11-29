@@ -1,9 +1,6 @@
 use leptos::prelude::*;
 
-use crate::{
-	components::del_button::DelButton,
-	pages::home::{Color, Group},
-};
+use crate::{components::del_button::DelButton, Color, Group};
 
 #[component]
 pub fn Swatch(

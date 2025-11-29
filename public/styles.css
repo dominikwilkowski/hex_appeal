@@ -36,6 +36,19 @@ button {
 	cursor: pointer;
 }
 
+nav {
+	ul {
+		list-style: none;
+		padding: 0;
+		margin: 1rem 0;
+
+		li {
+			display: inline-block;
+			margin: 0 0.5rem;
+		}
+	}
+}
+
 .group {
 	list-style: none;
 	padding: 1rem;
