@@ -1,7 +1,7 @@
 use leptos::{ev::SubmitEvent, prelude::*};
 
 use crate::{
-	color::group::{Color, Group},
+	color::group::Groups,
 	color::rgb::Rgb,
 	components::{del_button::DelButton, swatch::Swatch},
 };
@@ -14,13 +14,14 @@ pub fn Group(group_idx: ReadSignal<usize>) -> impl IntoView {
 	let (b, set_b) = signal(String::new());
 	let (color, set_color) = signal(String::new());
 
-	let groups = use_context::<ReadSignal<Vec<Group>>>().expect("Unable to find groups context");
-	let set_groups = use_context::<WriteSignal<Vec<Group>>>().expect("Unable to find set_groups context");
+	let groups = use_context::<ReadSignal<Groups>>().expect("Unable to find groups context");
+	let set_groups = use_context::<WriteSignal<Groups>>().expect("Unable to find set_groups context");
 
-	let colors = move || groups.with(|all| all.get(group_idx.get()).map(|g| g.colors.clone()).unwrap_or_default());
-	let group_name = move || groups.with(|all| all.get(group_idx.get()).map(|g| g.name.clone()).unwrap_or_default());
+	let colors = move || groups.with(|all| all.groups.get(group_idx.get()).map(|g| g.colors.clone()).unwrap_or_default());
+	let group_name =
+		move || groups.with(|all| all.groups.get(group_idx.get()).map(|g| g.name.clone()).unwrap_or_default());
 	let group_included =
-		move || groups.with(|all| all.get(group_idx.get()).map(|g| g.include_default).unwrap_or_default());
+		move || groups.with(|all| all.groups.get(group_idx.get()).map(|g| g.include_default).unwrap_or_default());
 
 	let on_submit = move |ev: SubmitEvent| {
 		ev.prevent_default();
@@ -31,11 +32,8 @@ pub fn Group(group_idx: ReadSignal<usize>) -> impl IntoView {
 		let blue = b.get().parse::<u8>().unwrap_or(0);
 
 		set_groups.update(|all| {
-			if let Some(group) = all.get_mut(group_idx.get()) {
-				group.colors.push(Color {
-					name: name.clone(),
-					value: Rgb { red, green, blue },
-				});
+			if let Some(group) = all.groups.get_mut(group_idx.get()) {
+				group.add(Rgb { red, green, blue }, name.clone());
 			}
 		});
 
@@ -54,15 +52,14 @@ pub fn Group(group_idx: ReadSignal<usize>) -> impl IntoView {
 				let index = group_idx.get_untracked();
 				set_groups
 					.update(move |groups| {
-						groups.remove(index);
+						groups.groups.remove(index);
 					});
 			}>"Delete"</DelButton>
 		</Show>
 		<ul class="group">
 			<ForEnumerate
 				each=move || colors()
-				// TODO: name is not guaranteed to be unique
-				key=|color| color.name.clone()
+				key=|color| color.id
 				children=move |idx, color| {
 					view! { <Swatch color=color idx=idx group_idx=group_idx /> }
 				}
