@@ -1,6 +1,6 @@
 use leptos::{ev::SubmitEvent, prelude::*};
 
-use crate::{color::Group, components::group::Group};
+use crate::{color::group::Group, components::group::Group};
 
 #[component]
 pub fn Home() -> impl IntoView {

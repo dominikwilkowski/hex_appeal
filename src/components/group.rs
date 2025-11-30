@@ -1,7 +1,8 @@
 use leptos::{ev::SubmitEvent, prelude::*};
 
 use crate::{
-	color::{Color, Group, Rgb},
+	color::group::{Color, Group},
+	color::rgb::Rgb,
 	components::{del_button::DelButton, swatch::Swatch},
 };
 

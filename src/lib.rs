@@ -4,7 +4,7 @@ use leptos_meta::*;
 use leptos_router::{components::*, path};
 
 use crate::{
-	color::Group,
+	color::group::Group,
 	pages::{home::Home, matrix::Matrix, not_found::NotFound},
 };
 

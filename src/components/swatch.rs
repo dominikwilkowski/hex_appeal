@@ -1,7 +1,7 @@
 use leptos::prelude::*;
 
 use crate::{
-	color::{Color, Group},
+	color::group::{Color, Group},
 	components::del_button::DelButton,
 };
 
