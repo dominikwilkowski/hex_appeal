@@ -145,3 +145,14 @@ nav {
 		}
 	}
 }
+
+.contrast_table {
+	width: 100%;
+	text-align: left;
+
+	td,
+	th {
+		width: 2rem;
+		height: 2rem;
+	}
+}

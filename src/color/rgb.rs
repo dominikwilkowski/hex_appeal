@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize, PartialEq)]
 pub struct Rgb {
 	pub red: u8,
 	pub green: u8,
@@ -41,7 +41,7 @@ impl Rgb {
 		}
 	}
 
-	fn relative_luminance(color: Rgb) -> f64 {
+	fn relative_luminance(color: &Rgb) -> f64 {
 		let linear_red = Self::srgb_channel_to_linear(color.red);
 		let linear_green = Self::srgb_channel_to_linear(color.green);
 		let linear_blue = Self::srgb_channel_to_linear(color.blue);
@@ -50,7 +50,7 @@ impl Rgb {
 		0.2126 * linear_red + 0.7152 * linear_green + 0.0722 * linear_blue
 	}
 
-	pub fn contrast_ratio(self, other_color: Rgb) -> f64 {
+	pub fn contrast_ratio(&self, other_color: &Rgb) -> f64 {
 		let luminance_self = Self::relative_luminance(self);
 		let luminance_other = Self::relative_luminance(other_color);
 
@@ -75,7 +75,7 @@ mod test {
 			green: 0,
 			blue: 0,
 		}
-		.contrast_ratio(Rgb {
+		.contrast_ratio(&Rgb {
 			red: 0,
 			green: 255,
 			blue: 0,
@@ -87,7 +87,7 @@ mod test {
 			green: 0,
 			blue: 0,
 		}
-		.contrast_ratio(Rgb {
+		.contrast_ratio(&Rgb {
 			red: 0,
 			green: 0,
 			blue: 255,
@@ -99,7 +99,7 @@ mod test {
 			green: 143,
 			blue: 94,
 		}
-		.contrast_ratio(Rgb {
+		.contrast_ratio(&Rgb {
 			red: 60,
 			green: 56,
 			blue: 90,

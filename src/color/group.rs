@@ -2,14 +2,14 @@ use serde::{Deserialize, Serialize};
 
 use crate::color::rgb::Rgb;
 
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize, PartialEq)]
 pub struct Color {
 	pub id: usize,
 	pub name: String,
 	pub value: Rgb,
 }
 
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize, PartialEq)]
 pub struct Group {
 	pub id: usize,
 	pub name: String,
@@ -29,7 +29,7 @@ impl Group {
 	}
 }
 
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize, PartialEq)]
 pub struct Groups {
 	pub group_increment: usize,
 	pub groups: Vec<Group>,
@@ -55,7 +55,7 @@ impl Default for Groups {
 			groups: vec![Group {
 				id: 1,
 				name: String::from("Default"),
-				include_default: false,
+				include_default: true,
 				color_increment: 3,
 				colors: vec![
 					Color {
