@@ -149,6 +149,8 @@ nav {
 .contrast_table {
 	width: 100%;
 	text-align: left;
+	margin-top: 2rem;
+	border: 1px solid #000;
 
 	td,
 	th {

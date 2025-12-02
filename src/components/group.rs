@@ -46,7 +46,22 @@ pub fn Group(group_idx: ReadSignal<usize>) -> impl IntoView {
 
 	view! {
 		<h2>{group_name}</h2>
-		<i>{if group_included() { "Included by default" } else { "Not included by default" }}</i>
+		<label>
+			"Include this group in all matrices"
+			<input
+				type="checkbox"
+				checked=group_included()
+				on:change=move |ev| {
+					let checked = event_target_checked(&ev);
+					set_groups
+						.update(|all| {
+							if let Some(group) = all.groups.get_mut(group_idx.get()) {
+								group.include_default = checked;
+							}
+						});
+				}
+			/>
+		</label>
 		<Show when=move || { group_idx.get() > 0 }>
 			<DelButton on_click=move |_| {
 				let index = group_idx.get_untracked();
