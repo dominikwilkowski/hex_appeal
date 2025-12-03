@@ -1,52 +1,17 @@
 use leptos::{ev::SubmitEvent, prelude::*};
 
-use crate::{components::group::Group, Color, Group, Rgb};
+use crate::{color::group::Groups, components::group::Group};
 
 #[component]
 pub fn Home() -> impl IntoView {
 	let (name, set_name) = signal(String::new());
 	let include_default = RwSignal::new(false);
-	let (groups, set_groups) = signal(vec![Group {
-		name: String::from("Default"),
-		include_default: false,
-		colors: vec![
-			Color {
-				name: String::from("Red"),
-				value: Rgb {
-					red: 255,
-					green: 0,
-					blue: 0,
-				},
-			},
-			Color {
-				name: String::from("Green"),
-				value: Rgb {
-					red: 0,
-					green: 255,
-					blue: 0,
-				},
-			},
-			Color {
-				name: String::from("Blue"),
-				value: Rgb {
-					red: 0,
-					green: 0,
-					blue: 255,
-				},
-			},
-		],
-	}]);
+	let groups = use_context::<ReadSignal<Groups>>().expect("Unable to find groups context");
+	let set_groups = use_context::<WriteSignal<Groups>>().expect("Unable to find set_groups context");
 
 	let on_submit = move |ev: SubmitEvent| {
 		ev.prevent_default();
-
-		let name = name.get();
-		set_groups.write().push(Group {
-			name: name.clone(),
-			include_default: include_default.get(),
-			colors: Vec::new(),
-		});
-
+		set_groups.write().add_group(name.get(), include_default.get());
 		set_name.set(String::new());
 	};
 
@@ -75,11 +40,10 @@ pub fn Home() -> impl IntoView {
 		}>
 
 			<ForEnumerate
-				each=move || groups.get()
-				// TODO: name is not guaranteed to be unique
-				key=|group| group.name.clone()
+				each=move || groups.get().groups
+				key=|group| group.id
 				children=move |idx, _| {
-					view! { <Group groups=groups group_idx=idx set_groups=set_groups /> }
+					view! { <Group group_idx=idx /> }
 				}
 			/>
 
@@ -90,6 +54,7 @@ pub fn Home() -> impl IntoView {
 							"Name: "
 							<input
 								type="text"
+								required
 								prop:value=name
 								on:input=move |ev| {
 									set_name.set(event_target_value(&ev));
