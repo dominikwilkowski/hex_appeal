@@ -1,97 +1,17 @@
 use leptos::{ev::SubmitEvent, prelude::*};
 
-use crate::components::group::Group;
-
-#[derive(Clone)]
-pub struct Rgb {
-	pub red: u8,
-	pub green: u8,
-	pub blue: u8,
-}
-
-impl Rgb {
-	pub fn from_hex(hex: &str) -> Option<Rgb> {
-		let hex = hex.strip_prefix('#')?;
-		if hex.len() == 3 {
-			let red = u8::from_str_radix(&hex[0..1], 16).ok()?;
-			let green = u8::from_str_radix(&hex[1..2], 16).ok()?;
-			let blue = u8::from_str_radix(&hex[2..3], 16).ok()?;
-
-			Some(Rgb {
-				red: red * 17,
-				green: green * 17,
-				blue: blue * 17,
-			})
-		} else if hex.len() == 6 {
-			let red = u8::from_str_radix(&hex[0..2], 16).ok()?;
-			let green = u8::from_str_radix(&hex[2..4], 16).ok()?;
-			let blue = u8::from_str_radix(&hex[4..6], 16).ok()?;
-
-			Some(Rgb { red, green, blue })
-		} else {
-			None
-		}
-	}
-}
-
-#[derive(Clone)]
-pub struct Color {
-	pub name: String,
-	pub value: Rgb,
-}
-
-#[derive(Clone)]
-pub struct Group {
-	pub name: String,
-	pub include_default: bool,
-	pub colors: Vec<Color>,
-}
+use crate::{color::group::Groups, components::group::Group};
 
 #[component]
 pub fn Home() -> impl IntoView {
 	let (name, set_name) = signal(String::new());
 	let include_default = RwSignal::new(false);
-	let (groups, set_groups) = signal(vec![Group {
-		name: String::from("Default"),
-		include_default: false,
-		colors: vec![
-			Color {
-				name: String::from("Red"),
-				value: Rgb {
-					red: 255,
-					green: 0,
-					blue: 0,
-				},
-			},
-			Color {
-				name: String::from("Green"),
-				value: Rgb {
-					red: 0,
-					green: 255,
-					blue: 0,
-				},
-			},
-			Color {
-				name: String::from("Blue"),
-				value: Rgb {
-					red: 0,
-					green: 0,
-					blue: 255,
-				},
-			},
-		],
-	}]);
+	let groups = use_context::<ReadSignal<Groups>>().expect("Unable to find groups context");
+	let set_groups = use_context::<WriteSignal<Groups>>().expect("Unable to find set_groups context");
 
 	let on_submit = move |ev: SubmitEvent| {
 		ev.prevent_default();
-
-		let name = name.get();
-		set_groups.write().push(Group {
-			name: name.clone(),
-			include_default: include_default.get(),
-			colors: Vec::new(),
-		});
-
+		set_groups.write().add_group(name.get(), include_default.get());
 		set_name.set(String::new());
 	};
 
@@ -119,43 +39,40 @@ pub fn Home() -> impl IntoView {
 			}
 		}>
 
-			<main class="container">
-				<h1>"Hex Appeal"</h1>
-				<ForEnumerate
-					each=move || groups.get()
-					// TODO: name is not guaranteed to be unique
-					key=|group| group.name.clone()
-					children=move |idx, _| {
-						view! { <Group groups=groups group_idx=idx set_groups=set_groups /> }
-					}
-				/>
+			<ForEnumerate
+				each=move || groups.get().groups
+				key=|group| group.id
+				children=move |idx, _| {
+					view! { <Group group_idx=idx /> }
+				}
+			/>
 
-				<form class="new_group" on:submit=on_submit>
-					<ul>
-						<li>
-							<label>
-								"Name: "
-								<input
-									type="text"
-									prop:value=name
-									on:input=move |ev| {
-										set_name.set(event_target_value(&ev));
-									}
-								/>
-							</label>
-						</li>
-						<li>
-							<label>
-								"Always include this group"
-								<input type="checkbox" bind:checked=include_default />
-							</label>
-						</li>
-						<li>
-							<button type="submit">Add Group</button>
-						</li>
-					</ul>
-				</form>
-			</main>
+			<form class="new_group" on:submit=on_submit>
+				<ul>
+					<li>
+						<label>
+							"Name: "
+							<input
+								type="text"
+								required
+								prop:value=name
+								on:input=move |ev| {
+									set_name.set(event_target_value(&ev));
+								}
+							/>
+						</label>
+					</li>
+					<li>
+						<label>
+							"Always include this group"
+							<input type="checkbox" bind:checked=include_default />
+						</label>
+					</li>
+					<li>
+						<button type="submit">Add Group</button>
+					</li>
+				</ul>
+			</form>
 		</ErrorBoundary>
 	}
 }

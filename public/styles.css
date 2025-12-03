@@ -36,6 +36,19 @@ button {
 	cursor: pointer;
 }
 
+nav {
+	ul {
+		list-style: none;
+		padding: 0;
+		margin: 1rem 0;
+
+		li {
+			display: inline-block;
+			margin: 0 0.5rem;
+		}
+	}
+}
+
 .group {
 	list-style: none;
 	padding: 1rem;
@@ -86,7 +99,7 @@ button {
 	.swatch_color {
 		height: 90px;
 		margin: 0.25rem 0.25rem 0 0.25rem;
-		border-radius: 10px;
+		border-radius: 8px;
 	}
 }
 
@@ -130,5 +143,18 @@ button {
 		li {
 			margin: 0.5rem;
 		}
+	}
+}
+
+.contrast_table {
+	width: 100%;
+	text-align: left;
+	margin-top: 2rem;
+	border: 1px solid #000;
+
+	td,
+	th {
+		width: 2rem;
+		height: 2rem;
 	}
 }
