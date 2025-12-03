@@ -11,7 +11,7 @@ pub fn Home() -> impl IntoView {
 
 	let on_submit = move |ev: SubmitEvent| {
 		ev.prevent_default();
-		set_groups.write().add(name.get(), include_default.get(), 0, Vec::new());
+		set_groups.write().add_group(name.get(), include_default.get());
 		set_name.set(String::new());
 	};
 
@@ -54,6 +54,7 @@ pub fn Home() -> impl IntoView {
 							"Name: "
 							<input
 								type="text"
+								required
 								prop:value=name
 								on:input=move |ev| {
 									set_name.set(event_target_value(&ev));

@@ -33,7 +33,7 @@ pub fn Group(group_idx: ReadSignal<usize>) -> impl IntoView {
 
 		set_groups.update(|all| {
 			if let Some(group) = all.groups.get_mut(group_idx.get()) {
-				group.add(Rgb { red, green, blue }, name.clone());
+				group.add_color(Rgb { red, green, blue }, name.clone());
 			}
 		});
 
@@ -87,6 +87,7 @@ pub fn Group(group_idx: ReadSignal<usize>) -> impl IntoView {
 								"Name: "
 								<input
 									type="text"
+									required
 									prop:value=name
 									on:input=move |ev| {
 										set_name.set(event_target_value(&ev));
@@ -99,6 +100,7 @@ pub fn Group(group_idx: ReadSignal<usize>) -> impl IntoView {
 								"R: "
 								<input
 									type="number"
+									required
 									min="0"
 									max="255"
 									prop:value=r
@@ -113,6 +115,7 @@ pub fn Group(group_idx: ReadSignal<usize>) -> impl IntoView {
 								"G: "
 								<input
 									type="number"
+									required
 									min="0"
 									max="255"
 									prop:value=g
@@ -127,6 +130,7 @@ pub fn Group(group_idx: ReadSignal<usize>) -> impl IntoView {
 								"B: "
 								<input
 									type="number"
+									required
 									min="0"
 									max="255"
 									prop:value=b
