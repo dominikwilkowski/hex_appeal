@@ -99,7 +99,7 @@ nav {
 	.swatch_color {
 		height: 90px;
 		margin: 0.25rem 0.25rem 0 0.25rem;
-		border-radius: 10px;
+		border-radius: 8px;
 	}
 }
 
@@ -149,6 +149,8 @@ nav {
 .contrast_table {
 	width: 100%;
 	text-align: left;
+	margin-top: 2rem;
+	border: 1px solid #000;
 
 	td,
 	th {
