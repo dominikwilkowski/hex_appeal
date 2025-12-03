@@ -4,7 +4,7 @@ use leptos_meta::*;
 use leptos_router::{components::*, path};
 
 use crate::{
-	color::Group,
+	color::group::Groups,
 	pages::{home::Home, matrix::Matrix, not_found::NotFound},
 };
 
@@ -18,8 +18,7 @@ const STORAGE_KEY: &str = "hex_appeal_v1";
 pub fn App() -> impl IntoView {
 	provide_meta_context();
 
-	let stored_groups: Vec<Group> =
-		gloo_storage::LocalStorage::get(STORAGE_KEY).unwrap_or_else(|_| vec![Group::default()]);
+	let stored_groups: Groups = gloo_storage::LocalStorage::get(STORAGE_KEY).unwrap_or_else(|_| Groups::default());
 	let (groups, set_groups) = signal(stored_groups);
 
 	Effect::new({
@@ -40,14 +39,14 @@ pub fn App() -> impl IntoView {
 
 		<main class="container">
 			<h1>"Hex Appeal"</h1>
-			<Router base="/hex_appeal">
+			<Router>
 				<nav>
 					<ul>
 						<li>
-							<A href="/hex_appeal/">Home</A>
+							<A href="/">Home</A>
 						</li>
 						<li>
-							<A href="/hex_appeal/matrix">Matrix</A>
+							<A href="/matrix">Matrix</A>
 						</li>
 					</ul>
 				</nav>
