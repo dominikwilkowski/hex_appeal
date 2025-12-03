@@ -1,47 +1,17 @@
 use leptos::{ev::SubmitEvent, prelude::*};
 
-use crate::components::group::Group;
-
-#[derive(Clone)]
-pub struct Rgb {
-	pub r: u8,
-	pub g: u8,
-	pub b: u8,
-}
-
-#[derive(Clone)]
-pub struct Color {
-	pub name: String,
-	pub value: Rgb,
-}
-
-#[derive(Clone)]
-pub struct Group {
-	pub name: String,
-	pub include_default: bool,
-	pub colors: Vec<Color>,
-}
+use crate::{color::group::Groups, components::group::Group};
 
 #[component]
 pub fn Home() -> impl IntoView {
 	let (name, set_name) = signal(String::new());
 	let include_default = RwSignal::new(false);
-	let (groups, set_groups) = signal(vec![Group {
-		name: String::from("Default"),
-		include_default: false,
-		colors: Vec::new(),
-	}]);
+	let groups = use_context::<ReadSignal<Groups>>().expect("Unable to find groups context");
+	let set_groups = use_context::<WriteSignal<Groups>>().expect("Unable to find set_groups context");
 
 	let on_submit = move |ev: SubmitEvent| {
 		ev.prevent_default();
-
-		let name = name.get();
-		set_groups.write().push(Group {
-			name: name.clone(),
-			include_default: include_default.get(),
-			colors: Vec::new(),
-		});
-
+		set_groups.write().add_group(name.get(), include_default.get());
 		set_name.set(String::new());
 	};
 
@@ -69,37 +39,40 @@ pub fn Home() -> impl IntoView {
 			}
 		}>
 
-			<main class="container">
-				<h1>"Hex Appeal"</h1>
-				<ForEnumerate
-					each=move || groups.get()
-					// TODO: name is not guaranteed to be unique
-					key=|group| group.name.clone()
-					children=move |idx, _| {
-						view! { <Group groups=groups group_idx=idx set_groups=set_groups /> }
-					}
-				/>
+			<ForEnumerate
+				each=move || groups.get().groups
+				key=|group| group.id
+				children=move |idx, _| {
+					view! { <Group group_idx=idx /> }
+				}
+			/>
 
-				<form class="buttons" on:submit=on_submit>
-					<label>
-						"Name: "
-						<input
-							type="text"
-							prop:value=name
-							on:input=move |ev| {
-								set_name.set(event_target_value(&ev));
-							}
-						/>
-					</label>
-
-					<label>
-						"Always include this group"
-						<input type="checkbox" bind:checked=include_default />
-					</label>
-					<button type="submit">Add Group</button>
-				</form>
-
-			</main>
+			<form class="new_group" on:submit=on_submit>
+				<ul>
+					<li>
+						<label>
+							"Name: "
+							<input
+								type="text"
+								required
+								prop:value=name
+								on:input=move |ev| {
+									set_name.set(event_target_value(&ev));
+								}
+							/>
+						</label>
+					</li>
+					<li>
+						<label>
+							"Always include this group"
+							<input type="checkbox" bind:checked=include_default />
+						</label>
+					</li>
+					<li>
+						<button type="submit">Add Group</button>
+					</li>
+				</ul>
+			</form>
 		</ErrorBoundary>
 	}
 }
