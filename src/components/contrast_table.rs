@@ -1,6 +1,9 @@
 use leptos::prelude::*;
 
-use crate::color::group::{Color, Groups};
+use crate::{
+	color::group::{Color, Groups},
+	components::contrast_badge::ContrastBadge,
+};
 
 #[component]
 pub fn ContrastTable(group_idx: ReadSignal<usize>) -> impl IntoView {
@@ -26,6 +29,10 @@ pub fn ContrastTable(group_idx: ReadSignal<usize>) -> impl IntoView {
 	view! {
 		<table class="contrast_table">
 			<caption>"Contrast comparison of "<strong>{group_name()}</strong></caption>
+			<colgroup>
+				<col class="col-label" />
+				<col class="col-value" span=colors.get().len() />
+			</colgroup>
 			<thead>
 				<tr>
 					<th />
@@ -53,18 +60,12 @@ pub fn ContrastTable(group_idx: ReadSignal<usize>) -> impl IntoView {
 									each=move || colors.get()
 									key=|col_color| col_color.id
 									children=move |col_color| {
-										let value = row_color.value.clone();
-										let ratio = row_color
-											.value
-											.contrast_ratio(&col_color.value);
 										view! {
 											<td>
-												<Show
-													when=move || { value != col_color.value }
-													fallback=|| view! { "-" }
-												>
-													{format!("{ratio:.2}")}
-												</Show>
+												<ContrastBadge
+													color1=row_color.value.clone()
+													color2=col_color.value
+												/>
 											</td>
 										}
 									}

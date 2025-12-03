@@ -8,7 +8,7 @@ use crate::{
 #[component]
 pub fn Swatch(color: Color, idx: ReadSignal<usize>, group_idx: ReadSignal<usize>) -> impl IntoView {
 	let set_groups = use_context::<WriteSignal<Groups>>().expect("Unable to find set_groups context");
-	let style = format!("background:rgb({}, {}, {})", color.value.red, color.value.green, color.value.blue,);
+	let style = format!("background:rgb({},{},{})", color.value.red, color.value.green, color.value.blue,);
 
 	view! {
 		<li class="swatch">
