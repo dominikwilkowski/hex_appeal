@@ -6,7 +6,7 @@ For Raquel
 
 ## Requirements
 
-- Install rust nightly `rustup toolchain install nightly --allow-downgrade`
+- Install rust
 - Install WASM target `rustup target add wasm32-unknown-unknown`
 - Install cargo-generate, trunk and leptosfmt `cargo install cargo-generate trunk leptosfmt --locked`
 

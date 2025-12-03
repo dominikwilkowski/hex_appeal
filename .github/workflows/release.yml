@@ -36,8 +36,7 @@ jobs:
         run: |
           rustup update --no-self-update
           rustup component add clippy
-          rustup toolchain install nightly --allow-downgrade
-          rustup target add wasm32-unknown-unknown --toolchain nightly
+          rustup target add wasm32-unknown-unknown
           cargo install cargo-generate trunk --locked
 
       - name: Cache Rust dependencies
