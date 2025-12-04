@@ -600,6 +600,7 @@ dependencies = [
  "leptos",
  "leptos_meta",
  "leptos_router",
+ "log",
  "serde",
  "wasm-bindgen",
  "wasm-bindgen-test",
