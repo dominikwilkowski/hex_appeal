@@ -7,20 +7,15 @@ authors = [
 	"Dominik Wilkowski <hi@dominik-wilkowski.com>",
 ]
 
+
 [dependencies]
 leptos = { version = "0.8", features = ["csr"] }
 leptos_meta = { version = "0.8" }
 leptos_router = { version = "0.8" }
 console_log = "1"
-log = "0.4"
-console_error_panic_hook = "0.1"
 gloo-storage = "0.3"
 serde = { version = "1", features = ["derive"] }
-
-# utils
-# strum = { version = "0.25", features = ["derive", "strum_macros"] }
-# strum_macros = "0.25"
-
+console_error_panic_hook = "0.1"
 
 [dev-dependencies]
 wasm-bindgen = "0.2"
@@ -33,3 +28,10 @@ opt-level = 'z'
 lto = true
 codegen-units = 1
 panic = "abort"
+
+[profile.dev]
+opt-level = 0
+debug = 1
+incremental = true
+codegen-units = 16
+lto = false

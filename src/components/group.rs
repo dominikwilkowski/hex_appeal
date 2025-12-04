@@ -50,7 +50,7 @@ pub fn Group(group_idx: ReadSignal<usize>) -> impl IntoView {
 			"Include this group in all matrices"
 			<input
 				type="checkbox"
-				checked=group_included()
+				checked=group_included
 				on:change=move |ev| {
 					let checked = event_target_checked(&ev);
 					set_groups
@@ -67,7 +67,9 @@ pub fn Group(group_idx: ReadSignal<usize>) -> impl IntoView {
 				let index = group_idx.get_untracked();
 				set_groups
 					.update(move |groups| {
-						groups.groups.remove(index);
+						if index < groups.groups.len() {
+							groups.groups.remove(index);
+						}
 					});
 			}>"Delete"</DelButton>
 		</Show>
