@@ -64,6 +64,12 @@ impl Rgb {
 	}
 }
 
+impl std::fmt::Display for Rgb {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "rgb({},{},{})", self.red, self.green, self.blue)
+	}
+}
+
 #[cfg(test)]
 mod test {
 	use super::*;

@@ -1,5 +1,6 @@
 body {
 	font-family: sans-serif;
+	padding-bottom: 4rem;
 }
 
 .container {
@@ -151,10 +152,50 @@ nav {
 	text-align: left;
 	margin-top: 2rem;
 	border: 1px solid #000;
+	table-layout: fixed;
+	border-collapse: collapse;
 
 	td,
 	th {
-		width: 2rem;
-		height: 2rem;
+		padding: 0.25rem;
+		word-wrap: break-word;
+		height: 3rem;
+	}
+
+	col.col-label {
+		width: 10rem;
+	}
+}
+
+.contrast_badge {
+	display: grid;
+	height: 100%;
+	align-items: center;
+	text-align: center;
+	font-size: 2rem;
+	padding: 0.5rem;
+	border-radius: 6px;
+	overflow: hidden;
+
+	&.contrast_badge_nope {
+		border: 1px solid #b1b6b7;
+
+		background-image: linear-gradient(
+			to top right,
+			transparent calc(50% - 1px),
+			#b1b6b7 calc(50% - 1px),
+			transparent calc(50% + 1px)
+		);
+	}
+
+	&.contrast_badge_same {
+		background: none;
+		border: none;
+	}
+
+	.contrast_badge_large_text {
+		vertical-align: super;
+		font-size: 0.75rem;
+		margin-left: 0.5rem;
 	}
 }
