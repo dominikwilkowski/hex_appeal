@@ -62,101 +62,57 @@ impl Default for Groups {
 						Color {
 							id: 1,
 							name: String::from("PrimaryGrayBlack"),
-							value: Rgb {
-								red: 0,
-								green: 0,
-								blue: 0,
-							},
+							value: Rgb::new(0, 0, 0),
 						},
 						Color {
 							id: 2,
 							name: String::from("PrimaryGray90"),
-							value: Rgb {
-								red: 24,
-								green: 21,
-								blue: 2,
-							},
+							value: Rgb::new(24, 21, 2),
 						},
 						Color {
 							id: 3,
 							name: String::from("PrimaryGray80"),
-							value: Rgb {
-								red: 61,
-								green: 58,
-								blue: 5,
-							},
+							value: Rgb::new(61, 58, 5),
 						},
 						Color {
 							id: 4,
 							name: String::from("PrimaryGray60"),
-							value: Rgb {
-								red: 113,
-								green: 110,
-								blue: 1,
-							},
+							value: Rgb::new(113, 110, 1),
 						},
 						Color {
 							id: 5,
 							name: String::from("PrimaryGray50"),
-							value: Rgb {
-								red: 173,
-								green: 170,
-								blue: 1,
-							},
+							value: Rgb::new(173, 170, 1),
 						},
 						Color {
 							id: 6,
 							name: String::from("PrimaryGray20"),
-							value: Rgb {
-								red: 191,
-								green: 189,
-								blue: 1,
-							},
+							value: Rgb::new(191, 189, 1),
 						},
 						Color {
 							id: 7,
 							name: String::from("PrimaryGray15"),
-							value: Rgb {
-								red: 223,
-								green: 221,
-								blue: 2,
-							},
+							value: Rgb::new(223, 221, 2),
 						},
 						Color {
 							id: 8,
 							name: String::from("PrimaryGray10"),
-							value: Rgb {
-								red: 241,
-								green: 237,
-								blue: 2,
-							},
+							value: Rgb::new(241, 237, 2),
 						},
 						Color {
 							id: 9,
 							name: String::from("PrimaryGray5"),
-							value: Rgb {
-								red: 246,
-								green: 245,
-								blue: 2,
-							},
+							value: Rgb::new(246, 245, 2),
 						},
 						Color {
 							id: 10,
 							name: String::from("PrimaryGray1"),
-							value: Rgb {
-								red: 248,
-								green: 248,
-								blue: 2,
-							},
+							value: Rgb::new(248, 248, 2),
 						},
 						Color {
 							id: 11,
 							name: String::from("PrimaryGrayWhite"),
-							value: Rgb {
-								red: 255,
-								green: 255,
-								blue: 2,
-							},
+							value: Rgb::new(255, 255, 2),
 						},
 					],
 				},
@@ -169,65 +125,37 @@ impl Default for Groups {
 						Color {
 							id: 1,
 							name: String::from("PrimaryPurple90"),
-							value: Rgb {
-								red: 70,
-								green: 0,
-								blue: 74,
-							},
+							value: Rgb::new(70, 0, 74),
 						},
 						Color {
 							id: 2,
 							name: String::from("PrimaryPurple80"),
-							value: Rgb {
-								red: 121,
-								green: 0,
-								blue: 127,
-							},
+							value: Rgb::new(121, 0, 127),
 						},
 						Color {
 							id: 3,
 							name: String::from("PrimaryPurple60"),
-							value: Rgb {
-								red: 156,
-								green: 59,
-								blue: 184,
-							},
+							value: Rgb::new(156, 59, 184),
 						},
 						Color {
 							id: 4,
 							name: String::from("PrimaryPurple50"),
-							value: Rgb {
-								red: 216,
-								green: 126,
-								blue: 255,
-							},
+							value: Rgb::new(216, 126, 255),
 						},
 						Color {
 							id: 5,
 							name: String::from("PrimaryPurple20"),
-							value: Rgb {
-								red: 255,
-								green: 199,
-								blue: 255,
-							},
+							value: Rgb::new(255, 199, 255),
 						},
 						Color {
 							id: 6,
 							name: String::from("PrimaryPurple10"),
-							value: Rgb {
-								red: 244,
-								green: 234,
-								blue: 255,
-							},
+							value: Rgb::new(244, 234, 255),
 						},
 						Color {
 							id: 7,
 							name: String::from("PrimaryPurple5"),
-							value: Rgb {
-								red: 249,
-								green: 242,
-								blue: 255,
-							},
+							value: Rgb::new(249, 242, 255),
 						},
 					],
 				},
@@ -240,47 +168,27 @@ impl Default for Groups {
 						Color {
 							id: 1,
 							name: String::from("PrimaryGreen80"),
-							value: Rgb {
-								red: 0,
-								green: 89,
-								blue: 61,
-							},
+							value: Rgb::new(0, 89, 61),
 						},
 						Color {
 							id: 2,
 							name: String::from("PrimaryGreen60"),
-							value: Rgb {
-								red: 0,
-								green: 134,
-								blue: 96,
-							},
+							value: Rgb::new(0, 134, 96),
 						},
 						Color {
 							id: 3,
 							name: String::from("PrimaryGreen50"),
-							value: Rgb {
-								red: 0,
-								green: 204,
-								blue: 150,
-							},
+							value: Rgb::new(0, 204, 150),
 						},
 						Color {
 							id: 4,
 							name: String::from("PrimaryGreen20"),
-							value: Rgb {
-								red: 153,
-								green: 244,
-								blue: 209,
-							},
+							value: Rgb::new(153, 244, 209),
 						},
 						Color {
 							id: 5,
 							name: String::from("PrimaryGreen10"),
-							value: Rgb {
-								red: 214,
-								green: 248,
-								blue: 233,
-							},
+							value: Rgb::new(214, 248, 233),
 						},
 					],
 				},
@@ -293,47 +201,27 @@ impl Default for Groups {
 						Color {
 							id: 1,
 							name: String::from("PrimaryCyan80"),
-							value: Rgb {
-								red: 0,
-								green: 80,
-								blue: 114,
-							},
+							value: Rgb::new(0, 80, 114),
 						},
 						Color {
 							id: 2,
 							name: String::from("PrimaryCyan60"),
-							value: Rgb {
-								red: 0,
-								green: 123,
-								blue: 170,
-							},
+							value: Rgb::new(0, 123, 170),
 						},
 						Color {
 							id: 3,
 							name: String::from("PrimaryCyan50"),
-							value: Rgb {
-								red: 0,
-								green: 188,
-								blue: 254,
-							},
+							value: Rgb::new(0, 188, 254),
 						},
 						Color {
 							id: 4,
 							name: String::from("PrimaryCyan20"),
-							value: Rgb {
-								red: 181,
-								green: 230,
-								blue: 254,
-							},
+							value: Rgb::new(181, 230, 254),
 						},
 						Color {
 							id: 5,
 							name: String::from("PrimaryCyan10"),
-							value: Rgb {
-								red: 216,
-								green: 240,
-								blue: 252,
-							},
+							value: Rgb::new(216, 240, 252),
 						},
 					],
 				},
@@ -346,47 +234,27 @@ impl Default for Groups {
 						Color {
 							id: 1,
 							name: String::from("PrimaryRed80"),
-							value: Rgb {
-								red: 137,
-								green: 1,
-								blue: 34,
-							},
+							value: Rgb::new(137, 1, 34),
 						},
 						Color {
 							id: 2,
 							name: String::from("PrimaryRed60"),
-							value: Rgb {
-								red: 213,
-								green: 0,
-								blue: 50,
-							},
+							value: Rgb::new(213, 0, 50),
 						},
 						Color {
 							id: 3,
 							name: String::from("PrimaryRed50"),
-							value: Rgb {
-								red: 255,
-								green: 114,
-								blue: 124,
-							},
+							value: Rgb::new(255, 114, 124),
 						},
 						Color {
 							id: 4,
 							name: String::from("PrimaryRed20"),
-							value: Rgb {
-								red: 255,
-								green: 207,
-								blue: 206,
-							},
+							value: Rgb::new(255, 207, 206),
 						},
 						Color {
 							id: 5,
 							name: String::from("PrimaryRed10"),
-							value: Rgb {
-								red: 255,
-								green: 228,
-								blue: 227,
-							},
+							value: Rgb::new(255, 228, 227),
 						},
 					],
 				},
@@ -399,92 +267,52 @@ impl Default for Groups {
 						Color {
 							id: 1,
 							name: String::from("SecondaryMustard80"),
-							value: Rgb {
-								red: 88,
-								green: 70,
-								blue: 0,
-							},
+							value: Rgb::new(88, 70, 0),
 						},
 						Color {
 							id: 2,
 							name: String::from("SecondaryMustard60"),
-							value: Rgb {
-								red: 135,
-								green: 108,
-								blue: 0,
-							},
+							value: Rgb::new(135, 108, 0),
 						},
 						Color {
 							id: 3,
 							name: String::from("SecondaryMustard50"),
-							value: Rgb {
-								red: 206,
-								green: 167,
-								blue: 0,
-							},
+							value: Rgb::new(206, 167, 0),
 						},
 						Color {
 							id: 4,
 							name: String::from("SecondaryMustard20"),
-							value: Rgb {
-								red: 254,
-								green: 220,
-								blue: 103,
-							},
+							value: Rgb::new(254, 220, 103),
 						},
 						Color {
 							id: 5,
 							name: String::from("SecondaryMustard10"),
-							value: Rgb {
-								red: 255,
-								green: 238,
-								blue: 177,
-							},
+							value: Rgb::new(255, 238, 177),
 						},
 						Color {
 							id: 6,
 							name: String::from("SecondarySalmon80"),
-							value: Rgb {
-								red: 112,
-								green: 51,
-								blue: 36,
-							},
+							value: Rgb::new(112, 51, 36),
 						},
 						Color {
 							id: 7,
 							name: String::from("SecondarySalmon60"),
-							value: Rgb {
-								red: 200,
-								green: 41,
-								blue: 0,
-							},
+							value: Rgb::new(200, 41, 0),
 						},
 						Color {
 							id: 8,
 							name: String::from("SecondarySalmon50"),
-							value: Rgb {
-								red: 255,
-								green: 119,
-								blue: 83,
-							},
+							value: Rgb::new(255, 119, 83),
 						},
 						Color {
 							id: 9,
 							name: String::from("SecondarySalmon20"),
-							value: Rgb {
-								red: 255,
-								green: 119,
-								blue: 83,
-							},
+							value: Rgb::new(255, 119, 83),
 						},
 						Color {
 							id: 10,
 							name: String::from("SecondarySalmon10"),
-							value: Rgb {
-								red: 255,
-								green: 232,
-								blue: 225,
-							},
+							value: Rgb::new(255, 232, 225),
 						},
 					],
 				},
@@ -497,74 +325,42 @@ impl Default for Groups {
 						Color {
 							id: 1,
 							name: String::from("TertiaryMidnight100"),
-							value: Rgb {
-								red: 8,
-								green: 48,
-								blue: 79,
-							},
+							value: Rgb::new(8, 48, 79),
 						},
 						Color {
 							id: 2,
 							name: String::from("TertiaryOcean100"),
-							value: Rgb {
-								red: 15,
-								green: 77,
-								blue: 83,
-							},
+							value: Rgb::new(15, 77, 83),
 						},
 						Color {
 							id: 3,
 							name: String::from("TertiarySeabreeze100"),
-							value: Rgb {
-								red: 50,
-								green: 201,
-								blue: 199,
-							},
+							value: Rgb::new(50, 201, 199),
 						},
 						Color {
 							id: 4,
 							name: String::from("TertiaryLime100"),
-							value: Rgb {
-								red: 200,
-								green: 240,
-								blue: 113,
-							},
+							value: Rgb::new(200, 240, 113),
 						},
 						Color {
 							id: 5,
 							name: String::from("TertiaryLemon100"),
-							value: Rgb {
-								red: 242,
-								green: 236,
-								blue: 72,
-							},
+							value: Rgb::new(242, 236, 72),
 						},
 						Color {
 							id: 6,
 							name: String::from("TertiaryTangerine100"),
-							value: Rgb {
-								red: 248,
-								green: 145,
-								blue: 14,
-							},
+							value: Rgb::new(248, 145, 14),
 						},
 						Color {
 							id: 7,
 							name: String::from("TertiaryFlamingo100"),
-							value: Rgb {
-								red: 255,
-								green: 76,
-								blue: 129,
-							},
+							value: Rgb::new(255, 76, 129),
 						},
 						Color {
 							id: 8,
 							name: String::from("TertiaryCottoncandy100"),
-							value: Rgb {
-								red: 255,
-								green: 167,
-								blue: 210,
-							},
+							value: Rgb::new(255, 167, 210),
 						},
 					],
 				},
@@ -587,36 +383,15 @@ mod test {
 			colors: Vec::new(),
 		};
 
-		group.add_color(
-			Rgb {
-				red: 255,
-				green: 255,
-				blue: 0,
-			},
-			String::from("Yellow"),
-		);
+		group.add_color(Rgb::new(255, 255, 0), String::from("Yellow"));
 
 		assert_eq!(group.color_increment, 1);
 		assert_eq!(group.colors.len(), 1);
 		assert_eq!(group.colors[0].id, 1);
 		assert_eq!(group.colors[0].name, "Yellow");
-		assert_eq!(
-			group.colors[0].value,
-			Rgb {
-				red: 255,
-				green: 255,
-				blue: 0
-			}
-		);
+		assert_eq!(group.colors[0].value, Rgb::new(255, 255, 0));
 
-		group.add_color(
-			Rgb {
-				red: 255,
-				green: 0,
-				blue: 0,
-			},
-			String::from("Red"),
-		);
+		group.add_color(Rgb::new(255, 0, 0), String::from("Red"));
 
 		assert_eq!(group.color_increment, 2);
 		assert_eq!(group.colors.len(), 2);
@@ -624,14 +399,7 @@ mod test {
 
 		group.colors.remove(1);
 
-		group.add_color(
-			Rgb {
-				red: 0,
-				green: 0,
-				blue: 255,
-			},
-			String::from("Blue"),
-		);
+		group.add_color(Rgb::new(0, 0, 255), String::from("Blue"));
 
 		assert_eq!(group.color_increment, 3);
 		assert_eq!(group.colors.len(), 2);
