@@ -28,10 +28,10 @@ pub fn ContrastTable(group_idx: ReadSignal<usize>) -> impl IntoView {
 
 	view! {
 		<table class="contrast_table">
-			<caption>"Contrast comparison of "<strong>{group_name()}</strong></caption>
+			<caption>"Contrast comparison of "<strong>{move || group_name()}</strong></caption>
 			<colgroup>
 				<col class="col-label" />
-				<col class="col-value" span=colors.get().len() />
+				<col class="col-value" span=move || colors.get().len() />
 			</colgroup>
 			<thead>
 				<tr>

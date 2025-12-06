@@ -6,7 +6,7 @@ For Raquel
 
 ## Requirements
 
-- Install rust
+- Install rust (stable)
 - Install WASM target `rustup target add wasm32-unknown-unknown`
 - Install cargo-generate, trunk and leptosfmt `cargo install cargo-generate trunk leptosfmt --locked`
 
@@ -15,12 +15,12 @@ For Raquel
 Dev locally:
 
 ```sh
-trunk serve
+RUSTFLAGS="--cfg=erase_components" trunk serve
 ```
 
 Before committing make sure you run:
 ```sh
-leptosfmt ./**/*.rs && cargo fmt -- -l
+leptosfmt ./**/*.rs && cargo fmt -- -l && cargo clippy
 ```
 
 ## Release
