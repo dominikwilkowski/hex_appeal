@@ -33,7 +33,7 @@ pub fn Group(group_idx: ReadSignal<usize>) -> impl IntoView {
 
 		set_groups.update(|all| {
 			if let Some(group) = all.groups.get_mut(group_idx.get()) {
-				group.add_color(Rgb { red, green, blue }, name.clone());
+				group.add_color(Rgb::new(red, green, blue), name.clone());
 			}
 		});
 

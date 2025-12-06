@@ -31,49 +31,53 @@ pub fn ContrastTable(group_idx: ReadSignal<usize>) -> impl IntoView {
 			<caption>"Contrast comparison of "<strong>{move || group_name()}</strong></caption>
 			<colgroup>
 				<col class="col-label" />
-				<col class="col-value" span=move || colors.get().len() />
+				<col class="col-value" span=move || colors.with(|colors_vec| colors_vec.len()) />
 			</colgroup>
 			<thead>
 				<tr>
 					<th />
-					<For
-						each=move || colors.get()
-						key=|color| color.id
-						children=move |color: Color| {
-							view! { <th>{color.name}</th> }
-						}
-					/>
+					{move || {
+						colors
+							.with(|colors_vec| {
+								colors_vec
+									.iter()
+									.map(|color| view! { <th>{color.name.clone()}</th> })
+									.collect_view()
+							})
+					}}
 				</tr>
 			</thead>
 			<tbody>
-				<For
-					each=move || colors.get()
-					key=|color| color.id
-					children=move |row_color| {
-						let colors = colors;
+				{move || {
+					colors
+						.with(|colors_vec| {
+							colors_vec
+								.iter()
+								.map(|row_color| {
+									let row_name = row_color.name.clone();
 
-						view! {
-							<tr>
-								<th>{row_color.name.clone()}</th>
-
-								<For
-									each=move || colors.get()
-									key=|col_color| col_color.id
-									children=move |col_color| {
-										view! {
-											<td>
-												<ContrastBadge
-													color1=row_color.value.clone()
-													color2=col_color.value
-												/>
-											</td>
-										}
+									view! {
+										<tr>
+											<th>{row_name}</th>
+											{colors_vec
+												.iter()
+												.map(|col_color| {
+													view! {
+														<td>
+															<ContrastBadge
+																color1=row_color.value
+																color2=col_color.value
+															/>
+														</td>
+													}
+												})
+												.collect_view()}
+										</tr>
 									}
-								/>
-							</tr>
-						}
-					}
-				/>
+								})
+								.collect_view()
+						})
+				}}
 			</tbody>
 		</table>
 	}
