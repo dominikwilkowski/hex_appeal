@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use std::cmp::Ordering;
+
 use crate::color::rgb::Rgb;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -26,6 +28,8 @@ impl Group {
 			name,
 			value,
 		});
+
+		self.colors.sort_by(|a, b| a.value.luminance.partial_cmp(&b.value.luminance).unwrap_or(Ordering::Equal));
 	}
 }
 
