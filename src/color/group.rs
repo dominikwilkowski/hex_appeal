@@ -399,7 +399,9 @@ mod test {
 
 		assert_eq!(group.color_increment, 2);
 		assert_eq!(group.colors.len(), 2);
-		assert_eq!(group.colors[1].id, 2);
+		assert_eq!(group.colors[0].id, 2);
+		assert_eq!(group.colors[0].name, "Red");
+		assert_eq!(group.colors[0].value, Rgb::new(255, 0, 0));
 
 		group.colors.remove(1);
 
@@ -407,7 +409,9 @@ mod test {
 
 		assert_eq!(group.color_increment, 3);
 		assert_eq!(group.colors.len(), 2);
-		assert_eq!(group.colors[1].id, 3);
+		assert_eq!(group.colors[0].id, 3);
+		assert_eq!(group.colors[0].name, "Blue");
+		assert_eq!(group.colors[0].value, Rgb::new(0, 0, 255));
 	}
 
 	#[test]
