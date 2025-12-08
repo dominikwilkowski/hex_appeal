@@ -5,7 +5,8 @@ use leptos_router::{components::*, path};
 
 use crate::{
 	color::group::Groups,
-	pages::{home::Home, matrix::Matrix, not_found::NotFound},
+	components::{footer::Footer, header::Header},
+	pages::{home::Home, matrix::Matrix, not_found::NotFound, settings::Settings},
 };
 
 mod color;
@@ -37,24 +38,16 @@ pub fn App() -> impl IntoView {
 		<Meta charset="UTF-8" />
 		<Meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-		<main class="container">
-			<h1>"Hex Appeal"</h1>
-			<Router>
-				<nav>
-					<ul>
-						<li>
-							<A href="/">Home</A>
-						</li>
-						<li>
-							<A href="/matrix">Matrix</A>
-						</li>
-					</ul>
-				</nav>
+		<Router>
+			<Header />
+			<main class="container">
 				<Routes fallback=|| view! { <NotFound /> }>
 					<Route path=path!("/") view=Home />
 					<Route path=path!("/matrix") view=Matrix />
+					<Route path=path!("/settings") view=Settings />
 				</Routes>
-			</Router>
-		</main>
+			</main>
+			<Footer />
+		</Router>
 	}
 }
