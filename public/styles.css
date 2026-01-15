@@ -60,6 +60,11 @@ footer {
 	padding: 4rem;
 	background: #f9fafc;
 	border-top: 1px dotted #b1b6b7;
+
+	.version {
+		float: right;
+		font-size: 85%;
+	}
 }
 
 .group_wrapper {
