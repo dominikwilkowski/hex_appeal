@@ -1,13 +1,17 @@
-body {
-	font-family: sans-serif;
-	padding-bottom: 4rem;
+html {
+	height: 100%;
 }
 
-.container {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
-	align-items: center;
+body {
+	font-family: sans-serif;
+	min-height: 100%;
+	display: grid;
+	grid-template-rows: auto 1fr auto;
+	margin: 0;
+}
+
+main {
+	margin: 1rem;
 }
 
 h1,
@@ -38,6 +42,7 @@ button {
 }
 
 nav {
+	text-align: center;
 	ul {
 		list-style: none;
 		padding: 0;
@@ -50,9 +55,31 @@ nav {
 	}
 }
 
+footer {
+	margin-top: 4rem;
+	padding: 4rem;
+	background: #f9fafc;
+	border-top: 1px dotted #b1b6b7;
+}
+
+.group_wrapper {
+	background: #f9fafc;
+	border: 1px solid #b1b6b7;
+	border-radius: 1rem;
+	padding: 1rem;
+
+	& + .group_wrapper {
+		margin-top: 2rem;
+	}
+
+	h2 {
+		padding-top: 0.5rem;
+	}
+}
+
 .group {
 	list-style: none;
-	padding: 1rem;
+	padding: 0;
 	display: flex;
 	flex-wrap: wrap;
 	gap: 1rem;
