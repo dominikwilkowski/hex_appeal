@@ -33,7 +33,7 @@ pub fn Group(group_idx: ReadSignal<usize>) -> impl IntoView {
 
 		set_groups.update(|all| {
 			if let Some(group) = all.groups.get_mut(group_idx.get()) {
-				group.add_color(Rgb { red, green, blue }, name.clone());
+				group.add_color(Rgb::new(red, green, blue), name.clone());
 			}
 		});
 
@@ -45,127 +45,129 @@ pub fn Group(group_idx: ReadSignal<usize>) -> impl IntoView {
 	};
 
 	view! {
-		<h2>{group_name}</h2>
-		<label>
-			"Include this group in all matrices"
-			<input
-				type="checkbox"
-				checked=group_included
-				on:change=move |ev| {
-					let checked = event_target_checked(&ev);
+		<div class="group_wrapper">
+			<h2>{group_name}</h2>
+			<label>
+				"Include this group in all matrices"
+				<input
+					type="checkbox"
+					checked=group_included
+					on:change=move |ev| {
+						let checked = event_target_checked(&ev);
+						set_groups
+							.update(|all| {
+								if let Some(group) = all.groups.get_mut(group_idx.get()) {
+									group.include_default = checked;
+								}
+							});
+					}
+				/>
+			</label>
+			<Show when=move || { group_idx.get() > 0 }>
+				<DelButton on_click=move |_| {
+					let index = group_idx.get_untracked();
 					set_groups
-						.update(|all| {
-							if let Some(group) = all.groups.get_mut(group_idx.get()) {
-								group.include_default = checked;
+						.update(move |groups| {
+							if index < groups.groups.len() {
+								groups.groups.remove(index);
 							}
 						});
-				}
-			/>
-		</label>
-		<Show when=move || { group_idx.get() > 0 }>
-			<DelButton on_click=move |_| {
-				let index = group_idx.get_untracked();
-				set_groups
-					.update(move |groups| {
-						if index < groups.groups.len() {
-							groups.groups.remove(index);
-						}
-					});
-			}>"Delete"</DelButton>
-		</Show>
-		<ul class="group">
-			<ForEnumerate
-				each=move || colors()
-				key=|color| color.id
-				children=move |idx, color| {
-					view! { <Swatch color=color idx=idx group_idx=group_idx /> }
-				}
-			/>
-			<li class="new_swatch">
-				<form on:submit=on_submit>
-					<ul>
-						<li class="new_swatch_name">
-							<label>
-								"Name: "
-								<input
-									type="text"
-									required
-									prop:value=name
-									on:input=move |ev| {
-										set_name.set(event_target_value(&ev));
-									}
-								/>
-							</label>
-						</li>
-						<li class="new_swatch_rgb">
-							<label>
-								"R: "
-								<input
-									type="number"
-									required
-									min="0"
-									max="255"
-									prop:value=r
-									on:input=move |ev| {
-										set_r.set(event_target_value(&ev));
-									}
-								/>
-							</label>
-						</li>
-						<li class="new_swatch_rgb">
-							<label>
-								"G: "
-								<input
-									type="number"
-									required
-									min="0"
-									max="255"
-									prop:value=g
-									on:input=move |ev| {
-										set_g.set(event_target_value(&ev));
-									}
-								/>
-							</label>
-						</li>
-						<li class="new_swatch_rgb">
-							<label>
-								"B: "
-								<input
-									type="number"
-									required
-									min="0"
-									max="255"
-									prop:value=b
-									on:input=move |ev| {
-										set_b.set(event_target_value(&ev));
-									}
-								/>
-							</label>
-						</li>
-						<li>
-							<label>
-								"Color: "
-								<input
-									type="color"
-									prop:value=color
-									on:input=move |ev| {
-										let value = event_target_value(&ev);
-										if let Some(rgb) = Rgb::from_hex(&value) {
-											set_r.set(rgb.red.to_string());
-											set_g.set(rgb.green.to_string());
-											set_b.set(rgb.blue.to_string());
+				}>"Delete"</DelButton>
+			</Show>
+			<ul class="group">
+				<ForEnumerate
+					each=move || colors()
+					key=|color| color.id
+					children=move |idx, color| {
+						view! { <Swatch color=color idx=idx group_idx=group_idx /> }
+					}
+				/>
+				<li class="new_swatch">
+					<form on:submit=on_submit>
+						<ul>
+							<li class="new_swatch_name">
+								<label>
+									"Name: "
+									<input
+										type="text"
+										required
+										prop:value=name
+										on:input=move |ev| {
+											set_name.set(event_target_value(&ev));
 										}
-										set_color.set(value);
-									}
-								/>
-							</label>
-						</li>
-						<li>
-							<button type="submit">Add Color</button>
-						</li>
-					</ul>
-				</form>
-			</li>
-		</ul>
+									/>
+								</label>
+							</li>
+							<li class="new_swatch_rgb">
+								<label>
+									"R: "
+									<input
+										type="number"
+										required
+										min="0"
+										max="255"
+										prop:value=r
+										on:input=move |ev| {
+											set_r.set(event_target_value(&ev));
+										}
+									/>
+								</label>
+							</li>
+							<li class="new_swatch_rgb">
+								<label>
+									"G: "
+									<input
+										type="number"
+										required
+										min="0"
+										max="255"
+										prop:value=g
+										on:input=move |ev| {
+											set_g.set(event_target_value(&ev));
+										}
+									/>
+								</label>
+							</li>
+							<li class="new_swatch_rgb">
+								<label>
+									"B: "
+									<input
+										type="number"
+										required
+										min="0"
+										max="255"
+										prop:value=b
+										on:input=move |ev| {
+											set_b.set(event_target_value(&ev));
+										}
+									/>
+								</label>
+							</li>
+							<li>
+								<label>
+									"Color: "
+									<input
+										type="color"
+										prop:value=color
+										on:input=move |ev| {
+											let value = event_target_value(&ev);
+											if let Some(rgb) = Rgb::from_hex(&value) {
+												set_r.set(rgb.red.to_string());
+												set_g.set(rgb.green.to_string());
+												set_b.set(rgb.blue.to_string());
+											}
+											set_color.set(value);
+										}
+									/>
+								</label>
+							</li>
+							<li>
+								<button type="submit">Add Color</button>
+							</li>
+						</ul>
+					</form>
+				</li>
+			</ul>
+		</div>
 	}
 }
