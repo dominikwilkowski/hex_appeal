@@ -1,5 +1,7 @@
 use leptos::prelude::*;
 
+use std::cmp::Ordering;
+
 use crate::{
 	color::group::{Color, Groups},
 	components::contrast_badge::ContrastBadge,
@@ -16,13 +18,17 @@ pub fn ContrastTable(group_idx: ReadSignal<usize>) -> impl IntoView {
 		let selected_idx = group_idx.get();
 
 		groups.with(|groups_state| {
-			groups_state
+			let mut colors = groups_state
 				.groups
 				.iter()
 				.enumerate()
 				.filter(|(idx, group)| *idx == selected_idx || group.include_default)
 				.flat_map(|(_, group)| group.colors.iter().cloned())
-				.collect::<Vec<Color>>()
+				.collect::<Vec<Color>>();
+
+			colors.sort_unstable_by(|a, b| a.value.luminance.partial_cmp(&b.value.luminance).unwrap_or(Ordering::Equal));
+
+			colors
 		})
 	});
 
