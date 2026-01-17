@@ -11,7 +11,19 @@ pub fn NewGroup(group_idx: ReadSignal<usize>) -> impl IntoView {
 	let (color, set_color) = signal(String::new());
 	let (show_form, set_show_form) = signal(false);
 
+	let name_input = NodeRef::<leptos::html::Input>::new();
+
 	let set_groups = use_context::<WriteSignal<Groups>>().expect("Unable to find set_groups context");
+
+	Effect::new(move |_| {
+		if show_form.get() && is_browser() {
+			if let Some(el) = name_input.get() {
+				request_animation_frame(move || {
+					let _ = el.focus();
+				});
+			}
+		}
+	});
 
 	let on_submit = move |ev: SubmitEvent| {
 		ev.prevent_default();
@@ -39,16 +51,29 @@ pub fn NewGroup(group_idx: ReadSignal<usize>) -> impl IntoView {
 			<Show
 				when=move || { show_form.get() }
 				fallback=move || {
-					view! { <button class="new_group_btn_open" on:click=move |_| set_show_form.set(true)>"+"</button> }
+					view! {
+						<button
+							class="new_group_btn_open unstyled_btn"
+							on:click=move |_| set_show_form.set(true)
+						>
+							"+"
+						</button>
+					}
 				}
 			>
 				<form on:submit=on_submit>
-					<button class="new_group_btn_close" on:click=move |_| set_show_form.set(false)>"x"</button>
+					<button
+						class="new_group_btn_close unstyled_btn"
+						on:click=move |_| set_show_form.set(false)
+					>
+						"x"
+					</button>
 					<ul>
 						<li class="new_swatch_name">
 							<label>
 								"Name: "
 								<input
+									node_ref=name_input
 									type="text"
 									required
 									prop:value=name
