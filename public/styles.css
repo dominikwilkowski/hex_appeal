@@ -41,6 +41,14 @@ button {
 	cursor: pointer;
 }
 
+.unstyled_btn {
+	appearance: none;
+	box-shadow: none;
+	border: 0;
+	padding: 0;
+	background: transparent;
+}
+
 nav {
 	text-align: center;
 	ul {
@@ -100,6 +108,7 @@ footer {
 	border: 1px solid #b1b6b7;
 	background: #f9fafc;
 	min-width: 9rem;
+	min-height: 8rem;
 	border-radius: 12px;
 	overflow: hidden;
 
@@ -138,6 +147,7 @@ footer {
 
 .new_swatch {
 	text-align: center;
+	position: relative;
 
 	form {
 		padding: 0;
@@ -155,6 +165,10 @@ footer {
 		.new_swatch_name {
 			display: flex;
 			max-width: 250px;
+
+			input {
+				margin-right: 1rem;
+			}
 		}
 
 		.new_swatch_rgb {
@@ -176,6 +190,25 @@ footer {
 		li {
 			margin: 0.5rem;
 		}
+	}
+}
+
+.new_group_form {
+	.new_group_btn_open {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 2rem;
+	}
+
+	.new_group_btn_close {
+		position: absolute;
+		right: 0.5rem;
 	}
 }
 
