@@ -94,7 +94,15 @@ pub fn NewGroup(group_idx: ReadSignal<usize>) -> impl IntoView {
 									prop:value=r
 									on:input=move |ev| {
 										set_r.set(event_target_value(&ev));
-										set_color.set(format!("#{:02X}{:02X}{:02X}", r.get().parse().unwrap_or(0), g.get().parse().unwrap_or(0), b.get().parse().unwrap_or(0)));
+										set_color
+											.set(
+												format!(
+													"#{:02X}{:02X}{:02X}",
+													r.get().parse().unwrap_or(0),
+													g.get().parse().unwrap_or(0),
+													b.get().parse().unwrap_or(0),
+												),
+											);
 									}
 								/>
 							</label>
@@ -110,7 +118,15 @@ pub fn NewGroup(group_idx: ReadSignal<usize>) -> impl IntoView {
 									prop:value=g
 									on:input=move |ev| {
 										set_g.set(event_target_value(&ev));
-										set_color.set(format!("#{:02X}{:02X}{:02X}", r.get().parse().unwrap_or(0), g.get().parse().unwrap_or(0), b.get().parse().unwrap_or(0)));
+										set_color
+											.set(
+												format!(
+													"#{:02X}{:02X}{:02X}",
+													r.get().parse().unwrap_or(0),
+													g.get().parse().unwrap_or(0),
+													b.get().parse().unwrap_or(0),
+												),
+											);
 									}
 								/>
 							</label>
@@ -126,7 +142,15 @@ pub fn NewGroup(group_idx: ReadSignal<usize>) -> impl IntoView {
 									prop:value=b
 									on:input=move |ev| {
 										set_b.set(event_target_value(&ev));
-										set_color.set(format!("#{:02X}{:02X}{:02X}", r.get().parse().unwrap_or(0), g.get().parse().unwrap_or(0), b.get().parse().unwrap_or(0)));
+										set_color
+											.set(
+												format!(
+													"#{:02X}{:02X}{:02X}",
+													r.get().parse().unwrap_or(0),
+													g.get().parse().unwrap_or(0),
+													b.get().parse().unwrap_or(0),
+												),
+											);
 									}
 								/>
 							</label>
