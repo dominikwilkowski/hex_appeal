@@ -5,10 +5,10 @@ use crate::{color::group::Groups, color::rgb::Rgb};
 #[component]
 pub fn NewGroup(group_idx: ReadSignal<usize>) -> impl IntoView {
 	let (name, set_name) = signal(String::new());
-	let (r, set_r) = signal(String::new());
-	let (g, set_g) = signal(String::new());
-	let (b, set_b) = signal(String::new());
-	let (color, set_color) = signal(String::new());
+	let (r, set_r) = signal(String::from("0"));
+	let (g, set_g) = signal(String::from("0"));
+	let (b, set_b) = signal(String::from("0"));
+	let (color, set_color) = signal(String::from("#000000"));
 	let (show_form, set_show_form) = signal(false);
 
 	let name_input = NodeRef::<leptos::html::Input>::new();
@@ -94,6 +94,7 @@ pub fn NewGroup(group_idx: ReadSignal<usize>) -> impl IntoView {
 									prop:value=r
 									on:input=move |ev| {
 										set_r.set(event_target_value(&ev));
+										set_color.set(format!("#{:02X}{:02X}{:02X}", r.get().parse().unwrap_or(0), g.get().parse().unwrap_or(0), b.get().parse().unwrap_or(0)));
 									}
 								/>
 							</label>
@@ -109,6 +110,7 @@ pub fn NewGroup(group_idx: ReadSignal<usize>) -> impl IntoView {
 									prop:value=g
 									on:input=move |ev| {
 										set_g.set(event_target_value(&ev));
+										set_color.set(format!("#{:02X}{:02X}{:02X}", r.get().parse().unwrap_or(0), g.get().parse().unwrap_or(0), b.get().parse().unwrap_or(0)));
 									}
 								/>
 							</label>
@@ -124,6 +126,7 @@ pub fn NewGroup(group_idx: ReadSignal<usize>) -> impl IntoView {
 									prop:value=b
 									on:input=move |ev| {
 										set_b.set(event_target_value(&ev));
+										set_color.set(format!("#{:02X}{:02X}{:02X}", r.get().parse().unwrap_or(0), g.get().parse().unwrap_or(0), b.get().parse().unwrap_or(0)));
 									}
 								/>
 							</label>

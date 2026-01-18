@@ -165,6 +165,10 @@ footer {
 		.new_swatch_name {
 			display: flex;
 			max-width: 250px;
+
+			input {
+				margin-right: 1rem;
+			}
 		}
 
 		.new_swatch_rgb {
