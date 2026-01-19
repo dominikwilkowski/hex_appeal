@@ -5,7 +5,7 @@ use leptos_router::components::A;
 pub fn Header() -> impl IntoView {
 	view! {
 		<header>
-			<h1>"Hex Appeal"</h1>
+			<h1 class="title">"Hex Appeal"</h1>
 			<nav>
 				<ul>
 					<li>
