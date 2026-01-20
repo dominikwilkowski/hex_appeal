@@ -292,3 +292,23 @@ footer {
 		margin-left: 0.5rem;
 	}
 }
+
+.toggle.mode_toggle {
+	.toggle_label {
+		cursor: pointer;
+
+		&:before {
+			content: "Mode AA";
+		}
+	}
+
+	input {
+		display: none;
+
+		&:checked + .toggle_label {
+			&:before {
+				content: "Mode AAA";
+			}
+		}
+	}
+}
