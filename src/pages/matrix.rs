@@ -13,6 +13,7 @@ pub fn Matrix() -> impl IntoView {
 	provide_context(mode);
 
 	view! {
+		"Mode: AA "
 		<Toggle
 			class="mode_toggle"
 			checked=move || mode.get() == Mode::DoubleA
@@ -21,6 +22,7 @@ pub fn Matrix() -> impl IntoView {
 				set_mode.set(if checked { Mode::DoubleA } else { Mode::TripleA });
 			}
 		/>
+		" AAA"
 
 		<ForEnumerate
 			each=move || groups.get().groups
