@@ -1,4 +1,13 @@
+use leptos::attr::Color;
 use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum ColorInputError {
+	UnableToParse,
+	UnableToParseHexColor,
+	OpacityNotSupported,
+	RgbOutofBounds,
+}
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq)]
 pub struct Rgb {
@@ -18,6 +27,31 @@ impl Rgb {
 			blue,
 			luminance,
 		}
+	}
+
+	pub fn from_import(color: &str) -> Result<Rgb, ColorInputError> {
+		if color.starts_with("#") {
+			if let Some(hex) = Self::from_hex(color) {
+				return Ok(hex);
+			} else {
+				return Err(ColorInputError::UnableToParseHexColor);
+			}
+		}
+
+		if color.starts_with("rgb(") {
+			if color.contains('/') {
+				return Err(ColorInputError::OpacityNotSupported);
+			}
+
+			let normalized_color = color.replace(' ', ",").replace(",,", ",");
+			let normalized_bits = normalized_color
+				.split(",")
+				.map(|bit| bit.parse::<u8>().map_err(|_| ColorInputError::RgbOutofBounds))
+				.collect::<Result<Vec<u8>, ColorInputError>>()?; // TODO early return if more/less than 3 normalized bits, then
+			// take the bits and create new color with Rgb::new()
+		}
+
+		Err(ColorInputError::UnableToParse)
 	}
 
 	pub fn from_hex(hex: &str) -> Option<Rgb> {
@@ -89,5 +123,30 @@ mod test {
 
 		let ratio = Rgb::new(101, 143, 94).contrast_ratio(&Rgb::new(60, 56, 90));
 		assert_eq!(format!("{:.5}", ratio), String::from("2.96202"));
+	}
+
+	#[test]
+	fn from_import_test() {
+		assert_eq!(
+			Rgb::from_import("#ff0000"),
+			Ok(Rgb {
+				red: 255,
+				green: 0,
+				blue: 0,
+				luminance: 0.2126
+			})
+		);
+
+		assert_eq!(
+			Rgb::from_import("#f00"),
+			Ok(Rgb {
+				red: 255,
+				green: 0,
+				blue: 0,
+				luminance: 0.2126
+			})
+		);
+
+		assert_eq!(Rgb::from_import("rgb( 33, 44, 22 / 0.7"), Err(ColorInputError::OpacityNotSupported));
 	}
 }
