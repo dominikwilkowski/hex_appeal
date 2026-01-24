@@ -1,12 +1,33 @@
-use leptos::attr::Color;
+use csscolorparser::{parse, ParseColorError};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum ColorInputError {
-	UnableToParse,
-	UnableToParseHexColor,
+	UnableToParse(ParseColorError),
 	OpacityNotSupported,
-	RgbOutofBounds,
+}
+
+impl std::fmt::Display for ColorInputError {
+	fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+		match self {
+			ColorInputError::UnableToParse(error) => match error {
+				ParseColorError::InvalidHex => write!(f, "Unable to parse Hex color"),
+				ParseColorError::InvalidRgb => write!(f, "Unable to parse RGB color"),
+				ParseColorError::InvalidHsl => write!(f, "Unable to parse Hsl color"),
+				ParseColorError::InvalidHwb => write!(f, "Unable to parse Hwb color"),
+				ParseColorError::InvalidHsv => write!(f, "Unable to parse Hsv color"),
+				ParseColorError::InvalidLab => write!(f, "Unable to parse Lab color"),
+				ParseColorError::InvalidLch => write!(f, "Unable to parse Lch color"),
+				ParseColorError::InvalidOklab => write!(f, "Unable to parse Oklab color"),
+				ParseColorError::InvalidOklch => write!(f, "Unable to parse Oklch color"),
+				ParseColorError::InvalidFunction => write!(f, "Unable to parse Function color"),
+				ParseColorError::InvalidUnknown => write!(f, "Unable to parse color"),
+			},
+			ColorInputError::OpacityNotSupported => {
+				write!(f, "Opacity in colors is not supported for contrast calculations")
+			},
+		}
+	}
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq)]
@@ -30,28 +51,13 @@ impl Rgb {
 	}
 
 	pub fn from_import(color: &str) -> Result<Rgb, ColorInputError> {
-		if color.starts_with("#") {
-			if let Some(hex) = Self::from_hex(color) {
-				return Ok(hex);
-			} else {
-				return Err(ColorInputError::UnableToParseHexColor);
-			}
+		let color = parse(color).map_err(ColorInputError::UnableToParse)?;
+		let [red, gree, blue, alpha] = color.to_rgba8();
+		if alpha < 255 {
+			Err(ColorInputError::OpacityNotSupported)
+		} else {
+			Ok(Rgb::new(red, gree, blue))
 		}
-
-		if color.starts_with("rgb(") {
-			if color.contains('/') {
-				return Err(ColorInputError::OpacityNotSupported);
-			}
-
-			let normalized_color = color.replace(' ', ",").replace(",,", ",");
-			let normalized_bits = normalized_color
-				.split(",")
-				.map(|bit| bit.parse::<u8>().map_err(|_| ColorInputError::RgbOutofBounds))
-				.collect::<Result<Vec<u8>, ColorInputError>>()?; // TODO early return if more/less than 3 normalized bits, then
-			// take the bits and create new color with Rgb::new()
-		}
-
-		Err(ColorInputError::UnableToParse)
 	}
 
 	pub fn from_hex(hex: &str) -> Option<Rgb> {
@@ -138,6 +144,16 @@ mod test {
 		);
 
 		assert_eq!(
+			Rgb::from_import("#ff0000ff"),
+			Ok(Rgb {
+				red: 255,
+				green: 0,
+				blue: 0,
+				luminance: 0.2126
+			})
+		);
+
+		assert_eq!(
 			Rgb::from_import("#f00"),
 			Ok(Rgb {
 				red: 255,
@@ -147,6 +163,6 @@ mod test {
 			})
 		);
 
-		assert_eq!(Rgb::from_import("rgb( 33, 44, 22 / 0.7"), Err(ColorInputError::OpacityNotSupported));
+		assert_eq!(Rgb::from_import("rgb( 33, 44, 22 / 0.7)"), Err(ColorInputError::OpacityNotSupported));
 	}
 }
