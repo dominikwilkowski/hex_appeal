@@ -139,6 +139,7 @@ footer {
 	min-height: 8rem;
 	border-radius: 12px;
 	overflow: hidden;
+	font-size: 0.85rem;
 
 	input {
 		display: inline-block;
@@ -156,7 +157,6 @@ footer {
 		list-style: none;
 		margin: 0.5rem 0 0 0;
 		padding: 0.25rem 0.5rem;
-		font-size: 0.85rem;
 
 		li {
 			display: flex;
