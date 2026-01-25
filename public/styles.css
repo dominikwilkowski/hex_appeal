@@ -140,6 +140,18 @@ footer {
 	border-radius: 12px;
 	overflow: hidden;
 
+	input {
+		display: inline-block;
+		width: 8rem;
+	}
+
+	label {
+		display: flex;
+		gap: 0.5rem;
+		align-items: center;
+		justify-content: end;
+	}
+
 	.swatch_label {
 		list-style: none;
 		margin: 0.5rem 0 0 0;
@@ -193,10 +205,6 @@ footer {
 		.new_swatch_name {
 			display: flex;
 			max-width: 250px;
-
-			input {
-				margin-right: 1rem;
-			}
 		}
 
 		.new_swatch_rgb {
