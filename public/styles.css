@@ -133,6 +133,9 @@ footer {
 
 .swatch,
 .new_swatch {
+	list-style: none;
+	padding: 0.25rem 0.25rem 0.5rem 0.25rem;
+	margin: 0;
 	border: 1px solid #b1b6b7;
 	background: #f9fafc;
 	min-width: 9rem;
@@ -156,7 +159,7 @@ footer {
 	.swatch_label {
 		list-style: none;
 		margin: 0.5rem 0 0 0;
-		padding: 0.25rem 0.5rem;
+		padding: 0;
 
 		li {
 			display: flex;
@@ -180,7 +183,7 @@ footer {
 
 	.swatch_color {
 		height: 90px;
-		margin: 0.25rem 0.25rem 0 0.25rem;
+		margin: 0;
 		border-radius: 8px;
 	}
 }
@@ -197,10 +200,6 @@ footer {
 		list-style: none;
 		padding: 0;
 		margin: 0;
-
-		li {
-			margin: 0.5rem;
-		}
 
 		.new_swatch_name {
 			display: flex;
@@ -245,6 +244,10 @@ footer {
 	.new_group_btn_close {
 		position: absolute;
 		right: 0.5rem;
+	}
+
+	ul li + li {
+		margin-top: 0.25rem;
 	}
 }
 
