@@ -1,4 +1,34 @@
+use csscolorparser::{parse, ParseColorError};
 use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum ColorInputError {
+	UnableToParse(ParseColorError),
+	OpacityNotSupported,
+}
+
+impl std::fmt::Display for ColorInputError {
+	fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+		match self {
+			ColorInputError::UnableToParse(error) => match error {
+				ParseColorError::InvalidHex => write!(f, "Unable to parse Hex color"),
+				ParseColorError::InvalidRgb => write!(f, "Unable to parse RGB color"),
+				ParseColorError::InvalidHsl => write!(f, "Unable to parse Hsl color"),
+				ParseColorError::InvalidHwb => write!(f, "Unable to parse Hwb color"),
+				ParseColorError::InvalidHsv => write!(f, "Unable to parse Hsv color"),
+				ParseColorError::InvalidLab => write!(f, "Unable to parse Lab color"),
+				ParseColorError::InvalidLch => write!(f, "Unable to parse Lch color"),
+				ParseColorError::InvalidOklab => write!(f, "Unable to parse Oklab color"),
+				ParseColorError::InvalidOklch => write!(f, "Unable to parse Oklch color"),
+				ParseColorError::InvalidFunction => write!(f, "Unable to parse Function color"),
+				ParseColorError::InvalidUnknown => write!(f, "Unable to parse color"),
+			},
+			ColorInputError::OpacityNotSupported => {
+				write!(f, "Opacity in colors is not supported for contrast calculations")
+			},
+		}
+	}
+}
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq)]
 pub struct Rgb {
@@ -20,22 +50,13 @@ impl Rgb {
 		}
 	}
 
-	pub fn from_hex(hex: &str) -> Option<Rgb> {
-		let hex = hex.strip_prefix('#')?;
-		if hex.len() == 3 {
-			let red = u8::from_str_radix(&hex[0..1], 16).ok()?;
-			let green = u8::from_str_radix(&hex[1..2], 16).ok()?;
-			let blue = u8::from_str_radix(&hex[2..3], 16).ok()?;
-
-			Some(Rgb::new(red * 17, green * 17, blue * 17))
-		} else if hex.len() == 6 {
-			let red = u8::from_str_radix(&hex[0..2], 16).ok()?;
-			let green = u8::from_str_radix(&hex[2..4], 16).ok()?;
-			let blue = u8::from_str_radix(&hex[4..6], 16).ok()?;
-
-			Some(Rgb::new(red, green, blue))
+	pub fn from_import(color: &str) -> Result<Rgb, ColorInputError> {
+		let color = parse(color).map_err(ColorInputError::UnableToParse)?;
+		let [red, gree, blue, alpha] = color.to_rgba8();
+		if alpha < 255 {
+			Err(ColorInputError::OpacityNotSupported)
 		} else {
-			None
+			Ok(Rgb::new(red, gree, blue))
 		}
 	}
 
@@ -89,5 +110,40 @@ mod test {
 
 		let ratio = Rgb::new(101, 143, 94).contrast_ratio(&Rgb::new(60, 56, 90));
 		assert_eq!(format!("{:.5}", ratio), String::from("2.96202"));
+	}
+
+	#[test]
+	fn from_import_test() {
+		assert_eq!(
+			Rgb::from_import("#ff0000"),
+			Ok(Rgb {
+				red: 255,
+				green: 0,
+				blue: 0,
+				luminance: 0.2126
+			})
+		);
+
+		assert_eq!(
+			Rgb::from_import("#ff0000ff"),
+			Ok(Rgb {
+				red: 255,
+				green: 0,
+				blue: 0,
+				luminance: 0.2126
+			})
+		);
+
+		assert_eq!(
+			Rgb::from_import("#f00"),
+			Ok(Rgb {
+				red: 255,
+				green: 0,
+				blue: 0,
+				luminance: 0.2126
+			})
+		);
+
+		assert_eq!(Rgb::from_import("rgb( 33, 44, 22 / 0.7)"), Err(ColorInputError::OpacityNotSupported));
 	}
 }

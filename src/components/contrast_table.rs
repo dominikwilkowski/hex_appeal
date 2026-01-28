@@ -33,58 +33,63 @@ pub fn ContrastTable(group_idx: ReadSignal<usize>) -> impl IntoView {
 	});
 
 	view! {
-		<table class="contrast_table">
-			<caption>"Contrast comparison of "<strong>{move || group_name()}</strong></caption>
-			<colgroup>
-				<col class="col-label" />
-				<col class="col-value" span=move || colors.with(|colors_vec| colors_vec.len()) />
-			</colgroup>
-			<thead>
-				<tr>
-					<th />
+		<div class="contrast_table_wrapper">
+			<table class="contrast_table">
+				<caption>"Contrast comparison of "<strong>{move || group_name()}</strong></caption>
+				<colgroup>
+					<col class="col-label" />
+					<col
+						class="col-value"
+						span=move || colors.with(|colors_vec| colors_vec.len())
+					/>
+				</colgroup>
+				<thead>
+					<tr>
+						<th />
+						{move || {
+							colors
+								.with(|colors_vec| {
+									colors_vec
+										.iter()
+										.map(|color| view! { <th>{color.name.clone()}</th> })
+										.collect_view()
+								})
+						}}
+					</tr>
+				</thead>
+				<tbody>
 					{move || {
 						colors
 							.with(|colors_vec| {
 								colors_vec
 									.iter()
-									.map(|color| view! { <th>{color.name.clone()}</th> })
+									.map(|row_color| {
+										let row_name = row_color.name.clone();
+
+										view! {
+											<tr>
+												<th>{row_name}</th>
+												{colors_vec
+													.iter()
+													.map(|col_color| {
+														view! {
+															<td>
+																<ContrastBadge
+																	color1=row_color.value
+																	color2=col_color.value
+																/>
+															</td>
+														}
+													})
+													.collect_view()}
+											</tr>
+										}
+									})
 									.collect_view()
 							})
 					}}
-				</tr>
-			</thead>
-			<tbody>
-				{move || {
-					colors
-						.with(|colors_vec| {
-							colors_vec
-								.iter()
-								.map(|row_color| {
-									let row_name = row_color.name.clone();
-
-									view! {
-										<tr>
-											<th>{row_name}</th>
-											{colors_vec
-												.iter()
-												.map(|col_color| {
-													view! {
-														<td>
-															<ContrastBadge
-																color1=row_color.value
-																color2=col_color.value
-															/>
-														</td>
-													}
-												})
-												.collect_view()}
-										</tr>
-									}
-								})
-								.collect_view()
-						})
-				}}
-			</tbody>
-		</table>
+				</tbody>
+			</table>
+		</div>
 	}
 }

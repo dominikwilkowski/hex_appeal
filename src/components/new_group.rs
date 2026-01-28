@@ -5,19 +5,18 @@ use crate::{color::group::Groups, color::rgb::Rgb};
 #[component]
 pub fn NewGroup(group_idx: ReadSignal<usize>) -> impl IntoView {
 	let (name, set_name) = signal(String::new());
-	let (r, set_r) = signal(String::from("0"));
-	let (g, set_g) = signal(String::from("0"));
-	let (b, set_b) = signal(String::from("0"));
-	let (color, set_color) = signal(String::from("#000000"));
+	let (color, set_color) = signal(String::from("#fff"));
+	let (swatch, set_swatch) = signal(String::from("#fff"));
 	let (show_form, set_show_form) = signal(false);
 
 	let name_input = NodeRef::<leptos::html::Input>::new();
 
 	let set_groups = use_context::<WriteSignal<Groups>>().expect("Unable to find set_groups context");
 
+	// move focus to input field when form is shown
 	Effect::new(move |_| {
 		if show_form.get() && is_browser() {
-			if let Some(el) = name_input.get() {
+			if let Some(el) = name_input.get_untracked() {
 				request_animation_frame(move || {
 					let _ = el.focus();
 				});
@@ -25,25 +24,27 @@ pub fn NewGroup(group_idx: ReadSignal<usize>) -> impl IntoView {
 		}
 	});
 
+	// show swatch color
+	Effect::new(move |_| {
+		if let Ok(parsed_color) = Rgb::from_import(&color.get()) {
+			set_swatch.set(format!("rgb({},{},{})", parsed_color.red, parsed_color.green, parsed_color.blue));
+		}
+	});
+
 	let on_submit = move |ev: SubmitEvent| {
 		ev.prevent_default();
 
 		let name = name.get();
-		let red = r.get().parse::<u8>().unwrap_or(0);
-		let green = g.get().parse::<u8>().unwrap_or(0);
-		let blue = b.get().parse::<u8>().unwrap_or(0);
-
-		set_groups.update(|all| {
-			if let Some(group) = all.groups.get_mut(group_idx.get()) {
-				group.add_color(Rgb::new(red, green, blue), name.clone());
-			}
-		});
+		if let Ok(parsed_color) = Rgb::from_import(&color.get()) {
+			set_groups.update(|all| {
+				if let Some(group) = all.groups.get_mut(group_idx.get()) {
+					group.add_color(parsed_color, name.clone());
+				}
+			});
+		}
 
 		set_name.set(String::new());
-		set_r.set(String::new());
-		set_g.set(String::new());
-		set_b.set(String::new());
-		set_color.set(String::new());
+		set_color.set(String::from("#fff"));
 	};
 
 	view! {
@@ -66,9 +67,15 @@ pub fn NewGroup(group_idx: ReadSignal<usize>) -> impl IntoView {
 						class="new_group_btn_close unstyled_btn"
 						on:click=move |_| set_show_form.set(false)
 					>
-						"x"
+						"Close"
 					</button>
 					<ul>
+						<li class="new_swatch_color">
+							<div
+								class="swatch_color"
+								style=format!("background-color: {}", swatch.get())
+							/>
+						</li>
 						<li class="new_swatch_name">
 							<label>
 								"Name: "
@@ -83,92 +90,14 @@ pub fn NewGroup(group_idx: ReadSignal<usize>) -> impl IntoView {
 								/>
 							</label>
 						</li>
-						<li class="new_swatch_rgb">
-							<label>
-								"R: "
-								<input
-									type="number"
-									required
-									min="0"
-									max="255"
-									prop:value=r
-									on:input=move |ev| {
-										set_r.set(event_target_value(&ev));
-										set_color
-											.set(
-												format!(
-													"#{:02X}{:02X}{:02X}",
-													r.get().parse().unwrap_or(0),
-													g.get().parse().unwrap_or(0),
-													b.get().parse().unwrap_or(0),
-												),
-											);
-									}
-								/>
-							</label>
-						</li>
-						<li class="new_swatch_rgb">
-							<label>
-								"G: "
-								<input
-									type="number"
-									required
-									min="0"
-									max="255"
-									prop:value=g
-									on:input=move |ev| {
-										set_g.set(event_target_value(&ev));
-										set_color
-											.set(
-												format!(
-													"#{:02X}{:02X}{:02X}",
-													r.get().parse().unwrap_or(0),
-													g.get().parse().unwrap_or(0),
-													b.get().parse().unwrap_or(0),
-												),
-											);
-									}
-								/>
-							</label>
-						</li>
-						<li class="new_swatch_rgb">
-							<label>
-								"B: "
-								<input
-									type="number"
-									required
-									min="0"
-									max="255"
-									prop:value=b
-									on:input=move |ev| {
-										set_b.set(event_target_value(&ev));
-										set_color
-											.set(
-												format!(
-													"#{:02X}{:02X}{:02X}",
-													r.get().parse().unwrap_or(0),
-													g.get().parse().unwrap_or(0),
-													b.get().parse().unwrap_or(0),
-												),
-											);
-									}
-								/>
-							</label>
-						</li>
-						<li>
+						<li class="new_swatch_input">
 							<label>
 								"Color: "
 								<input
-									type="color"
+									type="text"
 									prop:value=color
 									on:input=move |ev| {
-										let value = event_target_value(&ev);
-										if let Some(rgb) = Rgb::from_hex(&value) {
-											set_r.set(rgb.red.to_string());
-											set_g.set(rgb.green.to_string());
-											set_b.set(rgb.blue.to_string());
-										}
-										set_color.set(value);
+										set_color.set(event_target_value(&ev));
 									}
 								/>
 							</label>
