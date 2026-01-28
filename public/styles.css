@@ -10,6 +10,10 @@ body {
 	margin: 0;
 }
 
+body > * {
+	min-width: 0;
+}
+
 main {
 	margin: 1rem;
 }
@@ -251,18 +255,31 @@ footer {
 	}
 }
 
-.contrast_table {
+.contrast_table_wrapper {
 	width: 100%;
+	max-width: 100%;
+	overflow-x: auto;
+	overflow-y: hidden;
+	min-width: 0;
+	border: 1px solid #000;
+	grid-template-columns: minmax(0, 1fr);
+	margin: 2rem 0;
+	padding: 0.5rem;
+}
+
+.contrast_table {
+	width: max-content;
+	min-width: 100%;
 	text-align: left;
 	margin-top: 2rem;
-	border: 1px solid #000;
 	table-layout: fixed;
 	border-collapse: collapse;
+	border-spacing: 0;
 
 	td,
 	th {
 		padding: 0.25rem;
-		word-wrap: break-word;
+		overflow-wrap: anywhere;
 		height: 4rem;
 	}
 
@@ -281,6 +298,7 @@ footer {
 	padding: 0.5rem;
 	border-radius: 6px;
 	overflow: hidden;
+	min-width: 6rem;
 
 	&.contrast_badge_nope {
 		border: 1px solid #b1b6b7;
