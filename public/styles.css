@@ -263,7 +263,7 @@ footer {
 	th {
 		padding: 0.25rem;
 		word-wrap: break-word;
-		height: 3rem;
+		height: 4rem;
 	}
 
 	col.col-label {
@@ -272,6 +272,7 @@ footer {
 }
 
 .contrast_badge {
+	box-sizing: border-box;
 	display: grid;
 	height: 100%;
 	align-items: center;
