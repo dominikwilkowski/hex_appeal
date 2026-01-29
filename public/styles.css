@@ -256,8 +256,8 @@ footer {
 }
 
 .contrast_table_wrapper {
-	width: 100%;
-	max-width: 100%;
+	width: calc(100% - 1rem);
+	max-width: calc(100% - 1rem);
 	overflow-x: auto;
 	overflow-y: hidden;
 	min-width: 0;
