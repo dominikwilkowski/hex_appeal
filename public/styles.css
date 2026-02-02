@@ -10,6 +10,10 @@ body {
 	margin: 0;
 }
 
+body > * {
+	min-width: 0;
+}
+
 main {
 	margin: 1rem;
 }
@@ -133,18 +137,33 @@ footer {
 
 .swatch,
 .new_swatch {
+	list-style: none;
+	padding: 0.25rem 0.25rem 0.5rem 0.25rem;
+	margin: 0;
 	border: 1px solid #b1b6b7;
 	background: #f9fafc;
 	min-width: 9rem;
 	min-height: 8rem;
 	border-radius: 12px;
 	overflow: hidden;
+	font-size: 0.85rem;
+
+	input {
+		display: inline-block;
+		width: 8rem;
+	}
+
+	label {
+		display: flex;
+		gap: 0.5rem;
+		align-items: center;
+		justify-content: end;
+	}
 
 	.swatch_label {
 		list-style: none;
 		margin: 0.5rem 0 0 0;
-		padding: 0.25rem 0.5rem;
-		font-size: 0.85rem;
+		padding: 0;
 
 		li {
 			display: flex;
@@ -168,7 +187,7 @@ footer {
 
 	.swatch_color {
 		height: 90px;
-		margin: 0.25rem 0.25rem 0 0.25rem;
+		margin: 0;
 		border-radius: 8px;
 	}
 }
@@ -186,17 +205,9 @@ footer {
 		padding: 0;
 		margin: 0;
 
-		li {
-			margin: 0.5rem;
-		}
-
 		.new_swatch_name {
 			display: flex;
 			max-width: 250px;
-
-			input {
-				margin-right: 1rem;
-			}
 		}
 
 		.new_swatch_rgb {
@@ -238,21 +249,38 @@ footer {
 		position: absolute;
 		right: 0.5rem;
 	}
+
+	ul li + li {
+		margin-top: 0.25rem;
+	}
+}
+
+.contrast_table_wrapper {
+	width: calc(100% - 1rem);
+	max-width: calc(100% - 1rem);
+	overflow-x: auto;
+	overflow-y: hidden;
+	min-width: 0;
+	border: 1px solid #000;
+	grid-template-columns: minmax(0, 1fr);
+	margin: 2rem 0;
+	padding: 0.5rem;
 }
 
 .contrast_table {
-	width: 100%;
+	width: max-content;
+	min-width: 100%;
 	text-align: left;
 	margin-top: 2rem;
-	border: 1px solid #000;
 	table-layout: fixed;
 	border-collapse: collapse;
+	border-spacing: 0;
 
 	td,
 	th {
 		padding: 0.25rem;
-		word-wrap: break-word;
-		height: 3rem;
+		overflow-wrap: anywhere;
+		height: 4rem;
 	}
 
 	col.col-label {
@@ -261,6 +289,7 @@ footer {
 }
 
 .contrast_badge {
+	box-sizing: border-box;
 	display: grid;
 	height: 100%;
 	align-items: center;
@@ -269,6 +298,7 @@ footer {
 	padding: 0.5rem;
 	border-radius: 6px;
 	overflow: hidden;
+	min-width: 6rem;
 
 	&.contrast_badge_nope {
 		border: 1px solid #b1b6b7;
